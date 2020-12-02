@@ -1,15 +1,40 @@
-// import './sass/index.scss';
-import Game from './Game.js';
-let jestTestingVariable = 999;
+/* eslint-disable no-unused-vars */
+// git push -u origin main
 
-window.onload = function() {    
-    if (document.querySelector(".playBtn")) {
-        const playBtn = document.querySelector(".playBtn");
-        const game = new Game(playBtn);
-        game.initialize();
-    } else throw new Error('unable to find required DOM elements');
+import './sass/index.scss';
+//IMPORTING AN EXPORTED INSTANCE, CONSTRUCTOR CALLED ON EXPORT:
+import { loader } from './Loader.js';
+
+import { ITEMSLOADED_EVENT_NAME } from './Loader.js';
+
+const loadingCallback = () => {
+    console.log('EVENT NOTED: ', ITEMSLOADED_EVENT_NAME);
+    unsetListener(ITEMSLOADED_EVENT_NAME, loadingCallback);
+    
+    //LAUNCH NEW GAME    
 }
 
-const indexJestTestFunction = () => jestTestingVariable;
-export default indexJestTestFunction;
+const setListener = (eventName, callback) => {
+    console.log('WAITING FOR EVENT CALLED: ', eventName);
+    window.addEventListener(eventName, callback);
+}
+
+const unsetListener = (eventName, callback) => {
+    window.removeEventListener(eventName, callback);
+}
+
+setListener(ITEMSLOADED_EVENT_NAME, loadingCallback);
+
+//WHEN THE GAME ENDS MAKE SURE TO REMOVE:
+//window.removeEventListener('resize', loader.resizeGameWindow);
+
+
+// import { mainMenu } from './MainMenu.js';
+// import { game } from './Game.js';
+
+console.log('INDEX COMPLETED IMPORTS');
+
+// let jestTestingVariable = 999;
+// const indexJestTestFunction = () => jestTestingVariable;
+// export default indexJestTestFunction;
 
