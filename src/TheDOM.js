@@ -1,9 +1,9 @@
 export const DATA = {
 	HIDDEN_CLASS: "hidden",
 	LOADER_SELECTOR: "[data-loader]",
-	MAINMENU_SELECTOR: "[data-mainWrap]",
+	MENU_SELECTOR: "[data-menu]",
 	MAINWRAP_SELECTOR: "[data-mainWrap]",
-	//THESE DIMENTIONS ALSO SET IN SCSS MAINWRAP
+	//THESE DIMENTIONS ALSO SET IN SCSS MAINWRAP FOR SCALING
 	CANVAS_BASE_WIDTH: 640,
     CANVAS_BASE_HEIGHT: 360,
 }
@@ -35,10 +35,10 @@ export class TheDOM {
 
 	initializeTheDOM(receivedDomSelector) {
 		//TESTS START
-		console.log('visibilityToggleTestElement :', this.visibilityToggleTestElement);
+		// console.log('visibilityToggleTestElement :', this.visibilityToggleTestElement);
 		console.log('TheDOM constructor here, called by', this, 'received selector: ', receivedDomSelector);
 		console.log('binding the calling instance with:', this.element);
-		console.log('performing visibilityTest - this element should get display none: ', this.visibilityToggleTestElement);
+		// console.log('performing visibilityTest - this element should get display none: ', this.visibilityToggleTestElement);
 		//TESTS END
 	}
 }

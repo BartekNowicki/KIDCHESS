@@ -5,7 +5,7 @@
 	top: 50%;
   left: 50%;
   transform-origin: center;
-	transform: translate(-50%, -50%) scale($scaleMe);
+  transform: translate(-50%, -50%) scale($scaleMe);
 }
 
 @mixin alignContentCenterWithFlex() {
@@ -19,21 +19,27 @@ html {
   color: $mainColor;
   user-select: none;
   --scaleValue: 1;
+  border: 10px solid green;
 }
 
 body {
-  height: 100vh;
-  width: 100vw;
+  height: 95vh;
+  width: 100%;
   position: relative;
   background-color: black;  
+  border: 10px solid yellowgreen;
 }
 
 .mainWrap {
-  width: 640px;
-  height: 360px;  
+  // RETURN TO: width: 640px;
+  //440 IS ONLY TO FIT IN DEVTOOLS
+  width: 440px;
+  height: 360px;
   @include positionAbsoluteRightInTheCenterAndScale(var(--scaleValue));
   background-color: black;
   border: 10px solid $mainColor;
+  // @media(orientation: portrait) {}
+  
 }
 
 .hidden {
@@ -45,11 +51,23 @@ body {
   @include positionAbsoluteRightInTheCenterAndScale();
 }
 
-.loader {
+.loader, .menu {
   width: 100%;
 	height: 100%;
   font-size: 3rem;
-  @include alignContentCenterWithFlex();
+  // DO NOT CHANGE DISPLAY BECAUSE IT NEEDS TO DISAPPEAR WITH CLASS HIDDEN
+  // border: 10px solid blue;
+}
+
+.loader::after {
+content: "loading pieces...";
+position: absolute;
+bottom: 1%;
+left: 50%;
+transform: translateX(-50%);
+color: #f44336;
+font-size: 2rem;
+// border: 10px solid blue;
 }
 
 .loadingTest {
