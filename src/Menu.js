@@ -1,7 +1,9 @@
 import { TheDOM, DATA } from './TheDOM.js';
 //THESE REFERENCES BECOME AVAILABLE ONLY WHEN LOADING IS COMPLETE
 //DO NOT USE E.G. IN THE CONSTRUCTOR
-import { loaderLoadedReferences } from './index.js';
+import { loaderLoadedPicReferences } from './index.js';
+import { loaderLoadedSvgHTML } from './index.js';
+
 
 class Menu extends TheDOM {
 	constructor() {
@@ -13,19 +15,21 @@ class Menu extends TheDOM {
 	}
 
 	handleStart() {
-		//WHY DOES THIS LISTENER NOT GO AWAY??
 		this.element.removeEventListener('click', this.boundFunction);
 		this.toggleVisibility(this.element, 'invisible');
 		console.log('LET THE GAME COMMENCE!');
 	}
 
 	initializeMenu() {
-		this.element.style.backgroundPosition = `center`;
-		this.element.style.backgroundRepeat = "no-repeat";
-		this.element.style.backgroundSize = "50%";
-		this.element.style.backgroundImage = `url('${loaderLoadedReferences[1]}')`;
+		this.element.innerHTML = loaderLoadedSvgHTML[0];		
 		this.boundFunction = this.handleStart.bind(this);		
 		this.element.addEventListener('click', this.boundFunction);
+
+
+		// let x = window.getComputedStyle(image).getPropertyValue('fill');
+		// console.log('x', x)
+		
+
     }
 }
 

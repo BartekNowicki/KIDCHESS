@@ -1,6 +1,8 @@
 import { TheDOM, DATA } from './TheDOM.js';
-import loaderPic from './assets/loader.svg';
-import start from './assets/start.svg';
+import loaderPicHTML from './assets/king.svg';
+import startPicHTML from './assets/start.svg';
+import piecesPicHTML from './assets/pieces.svg';
+import kingPicHTML from './assets/king.svg';
 import img1 from './assets/1.jpg';
 import img2 from './assets/2.jpg';
 import img3 from './assets/3.jpg';
@@ -12,8 +14,9 @@ class Loader extends TheDOM {
         super(DATA.LOADER_SELECTOR);
         this.areAllItemsLoaded = false;
 		this.loadedItemsCounter = 0;
-		this.importedReferences = [loaderPic, start, img1, img2, img3, img4, img5];
-		this.importElements = [];
+		this.importedSvgHTML = [loaderPicHTML, startPicHTML, piecesPicHTML, kingPicHTML];
+		this.importedPicReferences = [img1, img2, img3, img4, img5];
+		this.importedPics = [];
 		this.width = 0;
 		this.height = 0;
         this.initializeLoader();
@@ -40,8 +43,7 @@ class Loader extends TheDOM {
     finalItemLoaded() {
         console.log('ALL ITEMS LOADED');
 		this.areAllItemsLoaded = true;
-		this.importElements.forEach(item => {
-			// console.log(item);
+		this.importedPics.forEach(item => {
 			this.toggleVisibility(item, 'invisible');
 			});
 		this.toggleVisibility(this.element, 'invisible');
@@ -56,7 +58,7 @@ class Loader extends TheDOM {
 		// console.log('loaded item: ', event.target);
 		event.target.removeEventListener(event.type, this.itemLoaded, false);
 		this.loadedItemsCounter++;
-		const loadedFraction = this.loadedItemsCounter / this.importedReferences.length;
+		const loadedFraction = this.loadedItemsCounter / this.importedPicReferences.length;
 		this.element.style.backgroundPosition = `${this.width * (1 - loadedFraction)}px center`;
 		console.log('FRACTION OF LOADED ITEMS: ', loadedFraction);
 		// this.element.innerHTML += this.loadedItemsCounter;
@@ -64,8 +66,9 @@ class Loader extends TheDOM {
 		event.target.setAttribute('class', 'loadingTest');
 		event.target.style.left = `${this.loadedItemsCounter * 60}px`;
 		this.element.appendChild(event.target);
-		this.importElements.push(event.target);
-		if (this.loadedItemsCounter === this.importedReferences.length) {
+		this.importedPics.push(event.target);
+
+		if (this.loadedItemsCounter === this.importedSvgHTML.length) {
 			this.finalItemLoaded();
 		}
 
@@ -83,18 +86,21 @@ class Loader extends TheDOM {
 		this.height = this.element.getBoundingClientRect().height;
 		// console.log('LOADER WIDTH: ', this.width);
 		// console.log('LOADER HEIGHT: ', this.height);
-		this.element.style.backgroundPosition = `${this.width} center`;
-		this.element.style.backgroundImage = `url('${loaderPic}')`;
-		this.element.style.backgroundRepeat = "no-repeat";
-		this.element.style.backgroundSize = this.width + 'px';		
-		// this.consoleInitialInfo();
+
+		this.element.innerHTML = loaderPicHTML;
+		// console.log(this.element.innerHTML);
+		
+		// this.element.style.backgroundPosition = `${this.width} center`;
+		// this.element.style.backgroundImage = `url('${loaderPic}')`;
+		// this.element.style.backgroundRepeat = "no-repeat";
+		// this.element.style.backgroundSize = this.width + 'px';		
+		// // this.consoleInitialInfo();
 		this.resizeGameWindow();
 		window.addEventListener('resize', this.resizeGameWindow);
-		for (let i = 0; i < this.importedReferences.length; i++) {
-			this.loadImage(this.importedReferences[i]);
+		for (let i = 0; i < this.importedPicReferences.length; i++) {
+			this.loadImage(this.importedPicReferences[i]);
 			//loadImage returns an image, use it if needed
 		}
-
     }
 }
 

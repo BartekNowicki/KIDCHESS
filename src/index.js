@@ -31,4 +31,5 @@ console.log('INDEX COMPLETED IMPORTS');
 // let jestTestingVariable = 999;
 // const indexJestTestFunction = () => jestTestingVariable;
 // export default indexJestTestFunction;
-export const loaderLoadedReferences = loader.importedReferences;
+export const loaderLoadedPicReferences = loader.importedPicReferences;
+export const loaderLoadedSvgHTML = loader.importedSvgHTML;

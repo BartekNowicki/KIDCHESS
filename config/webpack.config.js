@@ -44,9 +44,15 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
-        test: /\.(jpg|png|svg|gif|jpeg)$/,
+        test: /\.(jpg|png|gif|jpeg)$/,
         use: 'file-loader',
       },
+
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+      
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -70,3 +76,16 @@ module.exports = {
     }),
   ]  
  };
+
+
+//SWITCHED TO INLINE LOADER FOR SVG
+//REMOVED SVG FROM THE LIST:
+//  {
+//   test: /\.(jpg|png|svg|gif|jpeg)$/,
+//   use: 'file-loader',
+// },
+//ADDED A SEPARATE RULE FOR SVG:
+// {
+//   test: /\.svg$/,
+//   loader: 'svg-inline-loader'
+// }
