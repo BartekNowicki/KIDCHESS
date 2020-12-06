@@ -1,19 +1,34 @@
 import './sass/index.scss';
-//IMPORTING EXPORTED INSTANCES, CONSTRUCTOR CALLED UPON EXPORT:
+import { DATA } from './TheDOM.js';
+//IMPORTING EXPORTED INSTANCES, CONSTRUCTOR CALLED UPON EXPORT
+//WHEN LOADING IS COMPLETE LOADER DISPATCHES AN EVENT AND INDEX MOVES ON
 import { loader } from './Loader.js';
-import { ITEMSLOADED_EVENT_NAME } from './Loader.js';
 import { menu } from './Menu.js';
-// import { game } from './Game.js';
+import { game } from './Game.js';
+
+const testFunction = () => {
+    const testDiv = document.createElement('div');
+    testDiv.classList.add('onlyForTesting');
+    document.body.appendChild(testDiv);
+    game.insertPiece("king1", testDiv);
+    console.log('::::::::::HERE COMES THE TEST CHESSPIECE::::::::::', testDiv);
+}
 
 const loadingCallback = () => {
-    // console.log('EVENT NOTED: ', ITEMSLOADED_EVENT_NAME);
-    unsetListener(ITEMSLOADED_EVENT_NAME, loadingCallback);
+    // console.log('EVENT NOTED: ', DATA.ITEMSLOADED_EVENT_NAME);
+    unsetListener(DATA.ITEMSLOADED_EVENT_NAME, loadingCallback);
     //CANNOT INITIALIZE BEFORE LOADER COMPLETE:
-    menu.initializeMenu();    
+    menu.initializeMenu(); 
+    // testFunction();
+}
+
+const startingGameCallback = () => {
+    // console.log('EVENT NOTED: ', DATA.STARTGAME_EVENT_NAME);
+    game.initializeGame();     
 }
 
 const setListener = (eventName, callback) => {
-    console.log('WAITING FOR EVENT CALLED: ', eventName);
+    // console.log('WAITING FOR EVENT CALLED: ', eventName);
     window.addEventListener(eventName, callback);
 }
 
@@ -21,7 +36,8 @@ const unsetListener = (eventName, callback) => {
     window.removeEventListener(eventName, callback);
 }
 
-setListener(ITEMSLOADED_EVENT_NAME, loadingCallback);
+setListener(DATA.ITEMSLOADED_EVENT_NAME, loadingCallback);
+setListener(DATA.STARTGAME_EVENT_NAME, startingGameCallback);
 
 //WHEN THE GAME ENDS MAKE SURE TO REMOVE:
 //window.removeEventListener('resize', loader.resizeGameWindow);

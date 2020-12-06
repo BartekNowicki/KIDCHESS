@@ -1,5 +1,7 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { TheDOM, DATA } from './TheDOM.js';
 import allPiecesPicHTML from './assets/pieces.svg';
+import startPicHTML from './assets/start.svg';
 import img1 from './assets/1.jpg';
 import img2 from './assets/2.jpg';
 import img3 from './assets/3.jpg';
@@ -11,7 +13,7 @@ class Loader extends TheDOM {
         super(DATA.LOADER_SELECTOR);
         this.areAllItemsLoaded = false;
 		this.loadedItemsCounter = 0;
-		this.importedSvgHTML = [allPiecesPicHTML];
+		this.importedSvgHTML = [allPiecesPicHTML, startPicHTML];
 		this.importedPicReferences = [img1, img2, img3, img4, img5];
 		this.allImportedItems = [...this.importedSvgHTML, ...this.importedPicReferences];
 		this.width = 0;
@@ -24,7 +26,7 @@ class Loader extends TheDOM {
 		const scale = Math.min(width / DATA.CANVAS_BASE_WIDTH, height / DATA.CANVAS_BASE_HEIGHT);
 		console.log(width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);		
 		document.documentElement.style.setProperty("--scaleValue", scale);
-		console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);		
+		console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);
 	}
 
 	loadImage(imageReference) {		
@@ -43,16 +45,14 @@ class Loader extends TheDOM {
 		this.element.appendChild(newDiv);
 		this.loadedItemsCounter++;
 		// console.log('LOADED HTML: ', newDiv.innerHTML);
-		console.log(newDiv);
-		// debugger
-		
+		// console.log(newDiv);		
 	}
 
     finalItemLoaded() {
         console.log('ALL ITEMS LOADED');
 		this.areAllItemsLoaded = true;
-		// this.toggleVisibility(this.element, 'invisible');
-		// window.dispatchEvent(new CustomEvent(ITEMSLOADED_EVENT_NAME));
+		this.toggleVisibility(this.element, 'invisible');
+		window.dispatchEvent(new CustomEvent(DATA.ITEMSLOADED_EVENT_NAME));
 	}	
 
 	imageLoaded(event) {
@@ -83,20 +83,7 @@ class Loader extends TheDOM {
 			this.loadSvg(this.importedSvgHTML[j]);			
 		}
 	}
-
-	insertPiece(piece, parent) {
-		const chessPiece = document.getElementById(piece);
-		const chessPieceDiv = document.createElement('div');
-		parent.appendChild(chessPieceDiv);
-		chessPieceDiv.setAttribute('class', 'chessPieceDiv');
-		chessPieceDiv.innerHTML  = `<?xml version="1.0" standalone="no"?>
-		<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-		<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1280.000000pt" height="972.000000pt" viewBox="0 0 1280.000000 972.000000"
-		 preserveAspectRatio="xMidYMid meet"> 
-		<g transform="translate(0.000000,972) scale(0.100000,-0.100000)" fill="#f44336" stroke="none"> 
-		${chessPiece.outerHTML}	</g></svg>`;
-	}
-    
+	    
     initializeLoader() {
 		this.toggleVisibility(this.element, 'visible');
 		this.width = this.element.getBoundingClientRect().width;
@@ -104,30 +91,17 @@ class Loader extends TheDOM {
 		// console.log('LOADER WIDTH: ', this.width);
 		// console.log('LOADER HEIGHT: ', this.height);
 		
-		console.log('IMPORTED ITEMS: ', this.allImportedItems.length);
+		console.log('NUMBER OF IMPORTED ITEMS: ', this.allImportedItems.length);
 		// // this.consoleInitialInfo();
 		this.resizeGameWindow();
 		window.addEventListener('resize', this.resizeGameWindow);
 		this.loadAllItems();
-		this.insertPiece("king1", this.element);
-		this.insertPiece("queen1", this.element);
-		this.insertPiece("bishop1", this.element);		
-		this.insertPiece("knight1", this.element);
-		this.insertPiece("rook1", this.element);
-		this.insertPiece("pawn1", this.element);
-		this.insertPiece("pawn2", this.element);		
-		this.insertPiece("rook2", this.element);		
-		this.insertPiece("knight2", this.element);		
-		this.insertPiece("bishop2", this.element);		
-		this.insertPiece("queen2", this.element);		
-		this.insertPiece("king2", this.element);	
     }
 }
 
 export const loader = new Loader();
-
-export const ITEMSLOADED_EVENT_NAME = 'itemsLoaded';
-
+// export const ITEMSLOADED_EVENT_NAME = 'itemsLoaded';
+// export const STARTGAME_EVENT_NAME = 'gameStartRequested';
 
 //REMOVE THIS:
 // this.element.style.backgroundPosition = `${this.width} center`;

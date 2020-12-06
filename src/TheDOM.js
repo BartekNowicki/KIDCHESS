@@ -5,7 +5,9 @@ export const DATA = {
 	MAINWRAP_SELECTOR: "[data-mainWrap]",
 	//THESE DIMENTIONS ALSO SET IN SCSS MAINWRAP FOR SCALING
 	CANVAS_BASE_WIDTH: 640,
-    CANVAS_BASE_HEIGHT: 360,
+	CANVAS_BASE_HEIGHT: 360,
+	ITEMSLOADED_EVENT_NAME: 'itemsLoaded',
+    STARTGAME_EVENT_NAME: 'gameStartRequested',
 }
 
 export class TheDOM {
@@ -33,12 +35,14 @@ export class TheDOM {
 			: element.classList.remove(DATA.HIDDEN_CLASS);
 	}
 
+	visibilityToggleTest() {
+	console.log('visibilityToggleTestElement :', this.visibilityToggleTestElement);
+	console.log('performing visibilityTest - this element should get display none: ', this.visibilityToggleTestElement);
+	}
+
 	initializeTheDOM(receivedDomSelector) {
-		//TESTS START
-		// console.log('visibilityToggleTestElement :', this.visibilityToggleTestElement);
+		// this.visibilityToggleTest();		
 		console.log('TheDOM constructor here, called by', this, 'received selector: ', receivedDomSelector);
 		console.log('binding the calling instance with:', this.element);
-		// console.log('performing visibilityTest - this element should get display none: ', this.visibilityToggleTestElement);
-		//TESTS END
 	}
 }
