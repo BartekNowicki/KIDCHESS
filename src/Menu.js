@@ -42,6 +42,5 @@ class Menu extends TheDOM {
 
 export const menu = new Menu();
 
-// let x = window.getComputedStyle(image).getPropertyValue('fill');
-// console.log('x', x)
+
 		

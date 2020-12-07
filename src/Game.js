@@ -1,13 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { TheDOM, DATA } from './TheDOM.js';
-import { loaderLoadedSvgHTML } from './index.js';
+// import { loaderLoadedSvgHTML } from './index.js';
+import { board } from './Board.js';
 
 class Game extends TheDOM {
 	constructor() {
     super(DATA.MAINWRAP_SELECTOR);
     // console.log('game constructor here');
 		// console.log('game element: ', this.element);
-		// console.log('game this: ', this);
+    // console.log('game this: ', this);
+    this.board = board;
     }
 
     //ORIG KEEP
@@ -44,7 +46,7 @@ class Game extends TheDOM {
 
     initializeGame() {
       this.toggleVisibility(this.element, 'visible');      
-      console.log('GAME STARTING... ');
+      this.board.initializeBoard();
       // make cell class
       // make piece class
       // create board based on the cell class

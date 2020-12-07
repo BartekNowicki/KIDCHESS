@@ -3,6 +3,7 @@ export const DATA = {
 	LOADER_SELECTOR: "[data-loader]",
 	MENU_SELECTOR: "[data-menu]",
 	MAINWRAP_SELECTOR: "[data-mainWrap]",
+	BOARD_SELECTOR: "[data-board]",
 	//THESE DIMENTIONS ALSO SET IN SCSS MAINWRAP FOR SCALING
 	CANVAS_BASE_WIDTH: 640,
 	CANVAS_BASE_HEIGHT: 360,
@@ -42,7 +43,7 @@ export class TheDOM {
 
 	initializeTheDOM(receivedDomSelector) {
 		// this.visibilityToggleTest();		
-		console.log('TheDOM constructor here, called by', this, 'received selector: ', receivedDomSelector);
-		console.log('binding the calling instance with:', this.element);
+		// console.log('TheDOM constructor here, called by', this, 'received selector: ', receivedDomSelector);
+		// console.log('binding the calling instance with:', this.element);
 	}
 }

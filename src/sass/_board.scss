@@ -1,0 +1,57 @@
+.board {
+    width: 100%;
+    height: 100%;
+    // border: 1px solid white;
+    //CENTER THE BOARD:
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    justify-content: flex-start;  
+  }
+  
+  .boardCellDiv {
+    border: 1px solid rgba(255, 0, 0, 0.1);
+  } 
+  
+  @for $i from 1 through 4 {  
+    .boardCellDiv:nth-of-type(#{2*$i}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 5 through 8 {  
+    .boardCellDiv:nth-of-type(#{2*$i - 1}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 9 through 12 {  
+    .boardCellDiv:nth-of-type(#{2*$i}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 13 through 16 {  
+    .boardCellDiv:nth-of-type(#{2*$i - 1}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 17 through 20 {  
+    .boardCellDiv:nth-of-type(#{2*$i}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 21 through 24 {  
+    .boardCellDiv:nth-of-type(#{2*$i - 1}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 25 through 28 {  
+    .boardCellDiv:nth-of-type(#{2*$i}) {
+      background-color: $boardSquareColor;
+    }
+  }
+  @for $i from 29 through 32 {  
+    .boardCellDiv:nth-of-type(#{2*$i - 1}) {
+      background-color: $boardSquareColor;
+    }
+  }

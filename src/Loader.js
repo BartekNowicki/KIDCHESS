@@ -15,6 +15,7 @@ class Loader extends TheDOM {
 		this.loadedItemsCounter = 0;
 		this.importedSvgHTML = [allPiecesPicHTML, startPicHTML];
 		this.importedPicReferences = [img1, img2, img3, img4, img5];
+		this.importedPicReferences = [img1, img2];
 		this.allImportedItems = [...this.importedSvgHTML, ...this.importedPicReferences];
 		this.width = 0;
 		this.height = 0;
@@ -26,7 +27,7 @@ class Loader extends TheDOM {
 		const scale = Math.min(width / DATA.CANVAS_BASE_WIDTH, height / DATA.CANVAS_BASE_HEIGHT);
 		console.log(width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);		
 		document.documentElement.style.setProperty("--scaleValue", scale);
-		console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);
+		// console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);
 	}
 
 	loadImage(imageReference) {		
@@ -49,7 +50,7 @@ class Loader extends TheDOM {
 	}
 
     finalItemLoaded() {
-        console.log('ALL ITEMS LOADED');
+        // console.log('ALL ITEMS LOADED');
 		this.areAllItemsLoaded = true;
 		this.toggleVisibility(this.element, 'invisible');
 		window.dispatchEvent(new CustomEvent(DATA.ITEMSLOADED_EVENT_NAME));
@@ -60,7 +61,7 @@ class Loader extends TheDOM {
 		this.loadedItemsCounter++;
 		event.target.style.left = `${this.loadedItemsCounter * 50}px`;
 		const loadedFraction = Math.floor(this.loadedItemsCounter / this.allImportedItems.length * 100);
-		console.log('FRACTION OF LOADED ITEMS: ', loadedFraction);
+		// console.log('FRACTION OF LOADED ITEMS: ', loadedFraction);
 		let loaderInfoMessage = "'loading pieces...'" + `"  ${loadedFraction} %"`;
 		document.documentElement.style.setProperty("--loaderInfo", `${loaderInfoMessage}`);
 		
@@ -108,3 +109,6 @@ export const loader = new Loader();
 // this.element.style.backgroundImage = `url('${loaderPic}')`;
 // this.element.style.backgroundRepeat = "no-repeat";
 // this.element.style.backgroundSize = this.width + 'px';	
+
+// let x = window.getComputedStyle(image).getPropertyValue('fill');
+// console.log('x', x)
