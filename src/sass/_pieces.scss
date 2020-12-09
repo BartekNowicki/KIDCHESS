@@ -1,0 +1,35 @@
+//UNABLE TO JOIN THESE CALSSES AS THE SVG GROUPING <g> CANNOT BE INDIVIDUALLY MANIPULATED
+
+.chessPieceDivColor1 {
+    position: absolute;
+    border: 1px dashed yellow;
+    & svg {
+      @include positionAbsoluteRightInTheCenterAndScale();
+      width: 80%;
+      height: 80%;      
+      & g {
+        fill: var(--pieceColor1);
+      }
+    }
+  }
+
+  .chessPieceDivColor2 {
+    position: absolute;
+    border: 1px dashed yellow;
+    & svg {
+      @include positionAbsoluteRightInTheCenterAndScale();
+      width: 80%;
+      height: 80%;      
+      & g {
+        fill: var(--pieceColor2);
+      }
+    }
+  }
+
+  .smallerSvgInside {    
+    & svg {
+      transform: translate(-50%, -45%) scale(0.7,0.7);        
+    }
+
+  }
+  

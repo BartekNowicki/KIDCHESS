@@ -6,14 +6,6 @@ import { loader } from './Loader.js';
 import { menu } from './Menu.js';
 import { game } from './Game.js';
 
-const testFunction = () => {
-    const testDiv = document.createElement('div');
-    testDiv.classList.add('onlyForTesting');
-    document.body.appendChild(testDiv);
-    game.insertPiece("king1", testDiv);
-    console.log('::::::::::HERE COMES THE TEST CHESSPIECE::::::::::', testDiv);
-}
-
 const loadingCallback = () => {
     // console.log('EVENT NOTED: ', DATA.ITEMSLOADED_EVENT_NAME);
     unsetListener(DATA.ITEMSLOADED_EVENT_NAME, loadingCallback);

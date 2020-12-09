@@ -1,20 +1,22 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { TheDOM, DATA } from './TheDOM.js';
-import allPiecesPicHTML from './assets/pieces.svg';
+import loaderHTML from './assets/loader.svg'
 import startPicHTML from './assets/start.svg';
+import kingHTML from './assets/king.svg'; 
+import queenHTML from './assets/queen.svg'; 
+import rookHTML from './assets/rook.svg'; 
+import pawnHTML from './assets/pawn.svg'; 
+import knightHTML from './assets/knight.svg'; 
+import bishopHTML from './assets/bishop.svg'; 
 import img1 from './assets/1.jpg';
 import img2 from './assets/2.jpg';
-import img3 from './assets/3.jpg';
-import img4 from './assets/4.jpg';
-import img5 from './assets/5.jpg';
 
 class Loader extends TheDOM {
 	constructor() {
         super(DATA.LOADER_SELECTOR);
         this.areAllItemsLoaded = false;
 		this.loadedItemsCounter = 0;
-		this.importedSvgHTML = [allPiecesPicHTML, startPicHTML];
-		this.importedPicReferences = [img1, img2, img3, img4, img5];
+		this.importedSvgHTML = [loaderHTML, startPicHTML, kingHTML, queenHTML, rookHTML, pawnHTML, bishopHTML, knightHTML];
 		this.importedPicReferences = [img1, img2];
 		this.allImportedItems = [...this.importedSvgHTML, ...this.importedPicReferences];
 		this.width = 0;
@@ -25,7 +27,7 @@ class Loader extends TheDOM {
 	resizeGameWindow() {
 		const { innerWidth: width, innerHeight: height } = window;
 		const scale = Math.min(width / DATA.CANVAS_BASE_WIDTH, height / DATA.CANVAS_BASE_HEIGHT);
-		console.log(width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);		
+		console.log(width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);
 		document.documentElement.style.setProperty("--scaleValue", scale);
 		// console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);
 	}
@@ -87,11 +89,11 @@ class Loader extends TheDOM {
 	    
     initializeLoader() {
 		this.toggleVisibility(this.element, 'visible');
+		this.element.innerHTML = loaderHTML;
 		this.width = this.element.getBoundingClientRect().width;
 		this.height = this.element.getBoundingClientRect().height;
 		// console.log('LOADER WIDTH: ', this.width);
-		// console.log('LOADER HEIGHT: ', this.height);
-		
+		// console.log('LOADER HEIGHT: ', this.height);		
 		console.log('NUMBER OF IMPORTED ITEMS: ', this.allImportedItems.length);
 		// // this.consoleInitialInfo();
 		this.resizeGameWindow();
@@ -101,10 +103,9 @@ class Loader extends TheDOM {
 }
 
 export const loader = new Loader();
-// export const ITEMSLOADED_EVENT_NAME = 'itemsLoaded';
-// export const STARTGAME_EVENT_NAME = 'gameStartRequested';
 
-//REMOVE THIS:
+
+//HELPERS:
 // this.element.style.backgroundPosition = `${this.width} center`;
 // this.element.style.backgroundImage = `url('${loaderPic}')`;
 // this.element.style.backgroundRepeat = "no-repeat";
@@ -112,3 +113,15 @@ export const loader = new Loader();
 
 // let x = window.getComputedStyle(image).getPropertyValue('fill');
 // console.log('x', x)
+
+//     createCellElements() {
+//         this.cells.flat().forEach(cell => {
+//             const newHtml = cell.createElement();
+//             this.element.insertAdjacentHTML("beforeend", newHtml); 
+//             // console.log(newHtml);
+//             cell.element = cell.getElement(cell.selector);
+//             // console.log(cell.element);
+//         });
+//     }
+
+

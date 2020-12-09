@@ -14,7 +14,6 @@
         this.element = this.createElement();
         this.fromTop = null;
         this.fromLeft = null;
-        
     }
 
     createElement() {
@@ -27,32 +26,10 @@
         return element;
     }
 
-//     takeMeasurements() {
-//         if (!this.element) return
-//         // console.log('TOP:', this.element.offsetTop, 'LEFT:' , this.element.offsetLeft); 
-//         // console.log('PARENT: ', this.element.offsetParent);
-//         this.fromTop = this.element.offsetTop;
-//         this.fromLeft = this.element.offsetLeft;
-//         this.width = this.element.offsetWidth;
-//         this.height = this.element.offsetHeight;
-//     }
-
-//     assignClickListener() {
-//         if (!this.element) return
-//         this.element.addEventListener('click', ()=>{
-//             console.log(this.element);
-//             this.element.style.backgroundColor = "white";
-//             console.log('cell positioning: ', this.fromTop, this.fromLeft);
-//             console.log('cell dimentions: ', this.width, this.height);
-//         });
-//     }    
-
-//     getPosition() {
-//         return [this.fromTop, this.fromLeft];
-//     }
-
-//     getDimentions() {
-//         return [this.width, this.height];
-//     }
-
+    takeMeasurements() {
+        if (!this.element) return console.warn('measuring the board - elements missing!');
+        // console.log('TOP:', this.element.offsetTop, 'LEFT:' , this.element.offsetLeft); 
+        this.fromTop = this.element.offsetTop;
+        this.fromLeft = this.element.offsetLeft;
+    }
 }
