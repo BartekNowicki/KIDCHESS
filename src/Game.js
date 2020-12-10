@@ -14,15 +14,6 @@ class Game extends TheDOM {
     initializeGame() {
       this.toggleVisibility(this.element, 'visible');      
       this.board.initializeBoard();
-      // make cell class
-      // make piece class
-      // create board based on the cell class
-      // create pieces as instances of the piece class
-      // slide pieces on the board with intro animation
-      // assign each cell who the occupier is
-
-      //what about this one:?
-      // this.displayAllPieces();      
       }
 }
 

@@ -2,7 +2,7 @@
 
 .chessPieceDivColor1 {
     position: absolute;
-    border: 1px dashed yellow;
+    // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
       width: 80%;
@@ -15,7 +15,7 @@
 
   .chessPieceDivColor2 {
     position: absolute;
-    border: 1px dashed yellow;
+    // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
       width: 80%;
@@ -30,6 +30,15 @@
     & svg {
       transform: translate(-50%, -45%) scale(0.7,0.7);        
     }
-
   }
+
+  .activePiece { 
+    border: 1px dashed rgba(245, 245, 245, 0.3);
+  }
+
+  .activeMoveOptionCell { 
+    border: 1px dashed rgba(163, 4, 4, 0.8);
+  }
+
+  
   

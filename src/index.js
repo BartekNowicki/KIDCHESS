@@ -41,4 +41,7 @@ console.log('INDEX COMPLETED IMPORTS');
 // export default indexJestTestFunction;
 export const loaderLoadedPicReferences = loader.importedPicReferences;
 export const loaderLoadedSvgHTML = loader.importedSvgHTML;
-export const loaderDimentions = {width: loader.width, height: loader.height};
+export const loaderDimentions = { width: loader.width, height: loader.height };
+export const allCells = game.board.cells;
+export const allPieces = game.board.pieces;
+

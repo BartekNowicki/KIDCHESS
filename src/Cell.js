@@ -6,8 +6,8 @@
         // super();
         this.row = row;
         this.col = col;
-        this.occupied = false;
-        this.hasPiece = false;
+        // this.occupied = false;
+        // this.hasPiece = false;
         this.piece = "";
         this.selector = `[data-row="${this.row}"][data-col="${this.col}"]`;
         this.size = size;
