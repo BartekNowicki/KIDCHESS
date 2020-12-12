@@ -23,7 +23,6 @@ export class Piece {
             this.allCellsFromIndex = allCells;
             this.allPiecesFromIndex = allPieces;
             this.createThePiece();
-            
         }
 
         findPieceIndex(piece) {
@@ -41,7 +40,7 @@ export class Piece {
             this.moveOptionCells.length = 0; 
         }
 
-        checkPerpendicularMovementOptions(row, col) {            
+        checkPerpendicularMovementOptions(row, col, onlyOneCell = false) {            
             let i = 1;
             this.doneCheckingUpword = false;
             this.doneCheckingDownword = false;
@@ -50,7 +49,7 @@ export class Piece {
             while(!this.doneCheckingUpword) {
                 if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row - i][col]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingUpword = true : i++;
                 } else {
                     this.doneCheckingUpword = true;
                     i = 1;
@@ -59,7 +58,7 @@ export class Piece {
             while(!this.doneCheckingDownword) {
                 if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row + i][col]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingDownword = true : i++;
                 } else {
                     this.doneCheckingDownword = true;
                     i = 1;
@@ -68,7 +67,7 @@ export class Piece {
             while(!this.doneCheckingLeftword) {
                 if (this.allCellsFromIndex[row][col - i] && this.allCellsFromIndex[row][col - i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row][col - i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingLeftword = true : i++;
                 } else {
                     this.doneCheckingLeftword = true;
                     i = 1;
@@ -77,7 +76,7 @@ export class Piece {
             while(!this.doneCheckingRightword) {
                 if (this.allCellsFromIndex[row][col + i] && this.allCellsFromIndex[row][col + i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row][col + i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingRightword = true : i++;
                 } else {
                     this.doneCheckingRightword = true;
                     i = 1;
@@ -85,7 +84,7 @@ export class Piece {
             }
         }
 
-        checkDiagonalMovementOptions(row, col) {
+        checkDiagonalMovementOptions(row, col, onlyOneCell = false) {
             let i = 1;
             this.doneCheckingDiagonallyupleft = false;
             this.doneCheckingDiagonallyupright = false;
@@ -94,7 +93,7 @@ export class Piece {
             while(!this.doneCheckingDiagonallyupleft) {
                 if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col - i] && this.allCellsFromIndex[row - i][col - i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row - i][col - i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingDiagonallyupleft = true : i++;
                 } else {
                     this.doneCheckingDiagonallyupleft = true;
                     i = 1;
@@ -103,7 +102,7 @@ export class Piece {
             while(!this.doneCheckingDiagonallyupright) {
                 if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col + i] && this.allCellsFromIndex[row - i][col + i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row - i][col + i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingDiagonallyupright = true : i++;
                 } else {
                     this.doneCheckingDiagonallyupright = true;
                     i = 1;
@@ -112,7 +111,7 @@ export class Piece {
             while(!this.doneCheckingDiagonallydownright) {
                 if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col + i] && this.allCellsFromIndex[row + i][col + i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row + i][col + i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingDiagonallydownright = true : i++;
                 } else {
                     this.doneCheckingDiagonallydownright = true;
                     i = 1;
@@ -121,7 +120,7 @@ export class Piece {
             while(!this.doneCheckingDiagonallydownleft) {
                 if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col - i] && this.allCellsFromIndex[row + i][col - i].piece === "") {
                     this.moveOptionCells.push(this.allCellsFromIndex[row + i][col - i]);
-                    i++;
+                    onlyOneCell ? this.doneCheckingDiagonallydownleft = true : i++;
                 } else {
                     this.doneCheckingDiagonallydownleft = true;
                     i = 1;
@@ -164,37 +163,15 @@ export class Piece {
                     this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col + 2]);
                 }
             } else if (pieceName === "king") {
-                if (this.allCellsFromIndex[row + 1] && this.allCellsFromIndex[row + 1][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col]);
-                }
-                if (this.allCellsFromIndex[row + 1] && this.allCellsFromIndex[row + 1][col + 1] && this.allCellsFromIndex[row + 1][col + 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col + 1]);
-                }
-                if (this.allCellsFromIndex[row + 1] && this.allCellsFromIndex[row + 1][col - 1] && this.allCellsFromIndex[row + 1][col - 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col - 1]);
-                }
-                if (this.allCellsFromIndex[row][col - 1] && this.allCellsFromIndex[row][col - 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row][col - 1]);
-                }
-                if (this.allCellsFromIndex[row][col + 1] && this.allCellsFromIndex[row][col + 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row][col + 1]);
-                }
-                if (this.allCellsFromIndex[row - 1] && this.allCellsFromIndex[row - 1][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col]);
-                }
-                if (this.allCellsFromIndex[row - 1] && this.allCellsFromIndex[row - 1][col + 1] &&this.allCellsFromIndex[row - 1][col + 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col + 1]);
-                }
-                if (this.allCellsFromIndex[row - 1] && this.allCellsFromIndex[row - 1][col - 1] && this.allCellsFromIndex[row - 1][col - 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col - 1]);
-                }
+                this.checkPerpendicularMovementOptions(row, col, true);
+                this.checkDiagonalMovementOptions(row, col, true);
             } else if (pieceName === "rook") {
-                this.checkPerpendicularMovementOptions(row, col);
+                this.checkPerpendicularMovementOptions(row, col, false);
             } else if (pieceName === "bishop") {
-                this.checkDiagonalMovementOptions(row, col);
+                this.checkDiagonalMovementOptions(row, col, false);
             } else if (pieceName === "queen") {
-                this.checkPerpendicularMovementOptions(row, col);
-                this.checkDiagonalMovementOptions(row, col);
+                this.checkPerpendicularMovementOptions(row, col, false);
+                this.checkDiagonalMovementOptions(row, col, false);
             }
             
             this.moveOptionCells.forEach(cell => cell.element.classList.add("activeMoveOptionCell"));
@@ -208,17 +185,67 @@ export class Piece {
             });
         }
 
+        //MUST USE ARROW FUNCTION OTHERWISE REMOVING ALL LISTENERS WOULD REQUIRE BINDING AND STORING
+        //NEW REFERENCES TO DOZENS OF BOUND FUNCTIONS, ONE PER EACH POSSIBLE MOVE DESTINATION 
+        // OF A PIECE
+
+        slideThePiece = (event) => {
+
+            this.moveOptionCells.forEach(cell => {
+                if (cell.element === event.target) {
+                    
+                    this.element.style.left = `${cell.fromLeft}px`;
+                    this.element.style.top = `${cell.fromTop}px`;
+                    this.parentCell.piece = "";
+                    this.parentCell = cell;
+                    this.parentCell.piece = this.name;
+                    
+                    this.clearMoveOptions();
+                    this.deactivateAllPieces();
+                    this.removeAllMoveDestinationListeners();
+                    this.removeAllMoveDestinationListenersOfOtherPieces();   
+                }
+            });
+        }
+
+        addMoveDestinationListeners() {
+            // console.log('ACTIVATING MOVE LISTENERS TO', this.moveOptionCells);
+            for (const destinationCell of this.moveOptionCells) {
+                destinationCell.element.addEventListener('click', this.slideThePiece);
+            }
+        }
+
+        removeAllMoveDestinationListeners() {
+            for (const destinationCell of this.moveOptionCells) {
+                destinationCell.element.removeEventListener('click', this.slideThePiece);
+            }
+        } 
+
+        removeAllMoveDestinationListenersOfOtherPieces() {
+            this.allPiecesFromIndex.forEach((piece, index) => {
+                if (index !== this.allPiecesFromIndex.indexOf(this) && piece.moveOptionCells.length) {
+                    // console.log(`${piece.name} moveOptions: ${piece.moveOptionCells.length}`);
+                    piece.removeAllMoveDestinationListeners();
+                    console.log(`ALL MOVE LISTENERS SET BY ${piece.name} DEACTIVATED`);
+                }
+                });
+        } 
+
         handlePieceClick() {
             if (this.active) {
                 this.deactivateAllPieces();
-                this.clearMoveOptions();
+                this.removeAllMoveDestinationListeners();
+                this.clearMoveOptions();                
                 return
             }
             this.deactivateAllPieces();
             this.element.classList.add("activePiece");
             this.active = true;
             this.displayMoveOptions(this.parentCell.row, this.parentCell.col, this.name, this.colorSelection);
-            console.log(`${this.colorSelection} ${this.name} activated: ${this.active}`);    
+            this.removeAllMoveDestinationListenersOfOtherPieces();
+            this.addMoveDestinationListeners();
+            // console.log(`${this.colorSelection} ${this.name} ACTIVATED: ${this.active}`);
+            console.log('MY INDEX: ', this.allPiecesFromIndex.indexOf(this));    
         }
         
         createThePiece() {

@@ -29,8 +29,6 @@ class Board extends TheDOM {
             // console.log('ILOŚĆ WYGENEROWANYCH KOMÓREK: ', this.cells.flat().length); 
     }
 
-    
-//TIME MARK START OF ADDING PIECE CLASS
     insertPiece(pieceName, parentCell, colorSelection = "none", smaller = false) {
         if (colorSelection === "none") {
           throw new Error(`ERROR: color piece color not set`);
@@ -45,7 +43,7 @@ class Board extends TheDOM {
         
 
         //TEST PIECE FOR CHECKING MOVEMENT OPTIONS
-         this.insertPiece('queen', this.cells[3][3], "first", false);
+        //  this.insertPiece('king', this.cells[4][3], "first", false);
 
             this.insertPiece('rook', this.cells[7][0], "first", false);
             this.insertPiece('rook', this.cells[7][7], "first", false);

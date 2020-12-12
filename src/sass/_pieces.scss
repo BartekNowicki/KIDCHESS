@@ -2,6 +2,7 @@
 
 .chessPieceDivColor1 {
     position: absolute;
+    transition: 0.5s;
     // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
@@ -15,6 +16,7 @@
 
   .chessPieceDivColor2 {
     position: absolute;
+    transition: 0.5s;
     // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
