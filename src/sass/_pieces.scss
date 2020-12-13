@@ -2,7 +2,8 @@
 
 .chessPieceDivColor1 {
     position: absolute;
-    transition: 0.5s;
+    transition: var(--pieceMovementSpeed);
+    transition-timing-function: var(--pieceMovementEase);
     // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
@@ -16,7 +17,8 @@
 
   .chessPieceDivColor2 {
     position: absolute;
-    transition: 0.5s;
+    transition: var(--pieceMovementSpeed);
+    transition-timing-function: var(--pieceMovementEase);
     // border: 1px dashed yellow;
     & svg {
       @include positionAbsoluteRightInTheCenterAndScale();
@@ -43,4 +45,13 @@
   }
 
   
+  .bullet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(255, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 50%;
+  }
+
   

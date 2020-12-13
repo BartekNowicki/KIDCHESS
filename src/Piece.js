@@ -1,10 +1,9 @@
-import { loaderLoadedSvgHTML, allCells, allPieces } from './index.js';
+import { loaderLoadedSvgHTML, allCells, allPieces, pieceMovementSpeed } from './index.js';
 
 export class Piece {
         constructor (pieceName, parentCell, colorSelection, smaller) {
             this.name = pieceName;
             this.parentCell = parentCell;
-            // this.allCells = allCells;
             this.colorSelection = colorSelection;
             this.smaller = smaller;
             this.element = null;
@@ -12,6 +11,7 @@ export class Piece {
             this.fromLeft = null;
             this.active = false;
             this.moveOptionCells = [];
+            this.cellsToAttack = [];
             this.doneCheckingUpword = false;
             this.doneCheckingDownword = false;
             this.doneCheckingLeftword = false;
@@ -22,7 +22,9 @@ export class Piece {
             this.doneCheckingDiagonallydownright = false;
             this.allCellsFromIndex = allCells;
             this.allPiecesFromIndex = allPieces;
+            this.pieceMovementSpeedFromIndex = pieceMovementSpeed;
             this.createThePiece();
+            
         }
 
         findPieceIndex(piece) {
@@ -40,15 +42,24 @@ export class Piece {
             this.moveOptionCells.length = 0; 
         }
 
+        //CHECKS IF THE ROW EXISTS, IF SO IF THE COLUMN EXISTS, IF SO IF THE CELL IS EMPTY
+        //IF EMPTY THE CELL IS ADDED TO THE POTENTIAL MOVEMENT LIST AND THE FUNCTION RETURNS TRUE
+        checkAndIncludeAsMovementOption(row, col) {
+            if (this.allCellsFromIndex[row] && this.allCellsFromIndex[row][col] && this.allCellsFromIndex[row][col].piece === "")  {
+                this.moveOptionCells.push(this.allCellsFromIndex[row][col]);
+                return true
+            }
+            return false
+        }
+
         checkPerpendicularMovementOptions(row, col, onlyOneCell = false) {            
             let i = 1;
             this.doneCheckingUpword = false;
             this.doneCheckingDownword = false;
             this.doneCheckingLeftword = false;
             this.doneCheckingRightword = false;
-            while(!this.doneCheckingUpword) {
-                if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - i][col]);
+            while(!this.doneCheckingUpword) {  //
+                if (this.checkAndIncludeAsMovementOption(row - i, col)) {
                     onlyOneCell ? this.doneCheckingUpword = true : i++;
                 } else {
                     this.doneCheckingUpword = true;
@@ -56,8 +67,7 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingDownword) {
-                if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + i][col]);
+                if (this.checkAndIncludeAsMovementOption(row + i, col)) {
                     onlyOneCell ? this.doneCheckingDownword = true : i++;
                 } else {
                     this.doneCheckingDownword = true;
@@ -65,8 +75,7 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingLeftword) {
-                if (this.allCellsFromIndex[row][col - i] && this.allCellsFromIndex[row][col - i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row][col - i]);
+                if (this.checkAndIncludeAsMovementOption(row, col - i)) {
                     onlyOneCell ? this.doneCheckingLeftword = true : i++;
                 } else {
                     this.doneCheckingLeftword = true;
@@ -74,15 +83,14 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingRightword) {
-                if (this.allCellsFromIndex[row][col + i] && this.allCellsFromIndex[row][col + i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row][col + i]);
+                if (this.checkAndIncludeAsMovementOption(row, col + i)) {
                     onlyOneCell ? this.doneCheckingRightword = true : i++;
                 } else {
                     this.doneCheckingRightword = true;
                     i = 1;
                 }
             }
-        }
+        }        
 
         checkDiagonalMovementOptions(row, col, onlyOneCell = false) {
             let i = 1;
@@ -91,8 +99,7 @@ export class Piece {
             this.doneCheckingDiagonallydownleft = false;
             this.doneCheckingDiagonallydownright = false;
             while(!this.doneCheckingDiagonallyupleft) {
-                if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col - i] && this.allCellsFromIndex[row - i][col - i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - i][col - i]);
+                if (this.checkAndIncludeAsMovementOption(row - i, col - i)) {
                     onlyOneCell ? this.doneCheckingDiagonallyupleft = true : i++;
                 } else {
                     this.doneCheckingDiagonallyupleft = true;
@@ -100,8 +107,7 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingDiagonallyupright) {
-                if (this.allCellsFromIndex[row - i] && this.allCellsFromIndex[row - i][col + i] && this.allCellsFromIndex[row - i][col + i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - i][col + i]);
+                if (this.checkAndIncludeAsMovementOption(row - i, col + i)) {
                     onlyOneCell ? this.doneCheckingDiagonallyupright = true : i++;
                 } else {
                     this.doneCheckingDiagonallyupright = true;
@@ -109,8 +115,7 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingDiagonallydownright) {
-                if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col + i] && this.allCellsFromIndex[row + i][col + i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + i][col + i]);
+                if (this.checkAndIncludeAsMovementOption(row + i, col + i)) {
                     onlyOneCell ? this.doneCheckingDiagonallydownright = true : i++;
                 } else {
                     this.doneCheckingDiagonallydownright = true;
@@ -118,8 +123,7 @@ export class Piece {
                 }
             }
             while(!this.doneCheckingDiagonallydownleft) {
-                if (this.allCellsFromIndex[row + i] && this.allCellsFromIndex[row + i][col - i] && this.allCellsFromIndex[row + i][col - i].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + i][col - i]);
+                if (this.checkAndIncludeAsMovementOption(row + i, col - i)) {
                     onlyOneCell ? this.doneCheckingDiagonallydownleft = true : i++;
                 } else {
                     this.doneCheckingDiagonallydownleft = true;
@@ -132,36 +136,26 @@ export class Piece {
             this.clearMoveOptions();
             if (pieceName === "pawn") {
                 if (row === 0 || row === 7) return
-                if (colorSelection === "first" && this.allCellsFromIndex[row - 1][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col]);
-                } else if (this.allCellsFromIndex[row + 1][col].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col]);
+                if (colorSelection === "first") {
+                    this.checkAndIncludeAsMovementOption(row - 1, col);
+                    if (row === 6) {
+                        this.checkAndIncludeAsMovementOption(row - 2, col);
+                    }
+                } else if (colorSelection === "second") {
+                    this.checkAndIncludeAsMovementOption(row + 1, col);
+                    if (row === 1) {
+                        this.checkAndIncludeAsMovementOption(row + 2, col);
+                    }
                 }
             } else if (pieceName === "knight") {
-                if (this.allCellsFromIndex[row - 2] && this.allCellsFromIndex[row - 2][col - 1] && this.allCellsFromIndex[row - 2][col - 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 2][col - 1]);
-                }
-                if (this.allCellsFromIndex[row - 2] && this.allCellsFromIndex[row - 2][col + 1] && this.allCellsFromIndex[row - 2][col + 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 2][col + 1]);
-                }
-                if (this.allCellsFromIndex[row + 2] && this.allCellsFromIndex[row + 2][col - 1] && this.allCellsFromIndex[row + 2][col - 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 2][col - 1]);
-                }
-                if (this.allCellsFromIndex[row + 2] && this.allCellsFromIndex[row + 2][col + 1] && this.allCellsFromIndex[row + 2][col + 1].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 2][col + 1]);
-                }
-                if (this.allCellsFromIndex[row - 1] && this.allCellsFromIndex[row - 1][col - 2] && this.allCellsFromIndex[row - 1][col - 2].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col - 2]);
-                }
-                if (this.allCellsFromIndex[row - 1] && this.allCellsFromIndex[row - 1][col + 2] && this.allCellsFromIndex[row - 1][col + 2].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row - 1][col + 2]);
-                }
-                if (this.allCellsFromIndex[row + 1] && this.allCellsFromIndex[row + 1][col - 2] && this.allCellsFromIndex[row + 1][col - 2].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col - 2]);
-                }
-                if (this.allCellsFromIndex[row + 1] && this.allCellsFromIndex[row + 1][col + 2] && this.allCellsFromIndex[row + 1][col + 2].piece === "") {
-                    this.moveOptionCells.push(this.allCellsFromIndex[row + 1][col + 2]);
-                }
+                this.checkAndIncludeAsMovementOption(row - 2, col - 1);
+                this.checkAndIncludeAsMovementOption(row - 2, col + 1);
+                this.checkAndIncludeAsMovementOption(row - 1, col - 2);
+                this.checkAndIncludeAsMovementOption(row - 1, col + 2);
+                this.checkAndIncludeAsMovementOption(row + 1, col - 2);
+                this.checkAndIncludeAsMovementOption(row + 1, col + 2);
+                this.checkAndIncludeAsMovementOption(row + 2, col - 1);
+                this.checkAndIncludeAsMovementOption(row + 2, col + 1);
             } else if (pieceName === "king") {
                 this.checkPerpendicularMovementOptions(row, col, true);
                 this.checkDiagonalMovementOptions(row, col, true);
@@ -185,12 +179,33 @@ export class Piece {
             });
         }
 
-        //MUST USE ARROW FUNCTION OTHERWISE REMOVING ALL LISTENERS WOULD REQUIRE BINDING AND STORING
-        //NEW REFERENCES TO DOZENS OF BOUND FUNCTIONS, ONE PER EACH POSSIBLE MOVE DESTINATION 
-        // OF A PIECE
+        findCellsToAttack(pieceName, row, col) {
+            this.cellsToAttack.length = 0;
+            for (let i = 0; i <= 1; i++) {
+                this.cellsToAttack.push(this.allCellsFromIndex[i][i]);
+            }
+        }
 
-        slideThePiece = (event) => {
+        shoot() {
+            this.findCellsToAttack();
+            this.cellsToAttack.forEach(cell => {
+                console.log(`${this.name} --> ${cell.row} ${cell.col}`);
 
+                const bullet = document.createElement('div');
+                bullet.style.width = this.element.style.width;
+                bullet.style.height = this.element.style.height;
+                bullet.classList.add('bullet');
+                this.element.appendChild(bullet);
+                console.log(this.element, bullet);
+                
+            });
+
+            //MAKE SURE TO REMOVE THE BULLET ELEMENT AFTER THE HIT
+
+        }
+        
+        slideThePiece = (event) => {    
+            //MUST USE ARROW FUNCTION OTHERWISE REMOVING ALL LISTENERS WOULD REQUIRE BINDING /// AND STORING NEW REFERENCES TO DOZENS OF BOUND FUNCTIONS, ONE PER EACH POSSIBLE //MOVE DESTINATION OF A PIECE
             this.moveOptionCells.forEach(cell => {
                 if (cell.element === event.target) {
                     
@@ -199,7 +214,11 @@ export class Piece {
                     this.parentCell.piece = "";
                     this.parentCell = cell;
                     this.parentCell.piece = this.name;
-                    
+
+                    setTimeout(() => {
+                        this.shoot();
+                        }, parseInt(this.pieceMovementSpeedFromIndex + 300));
+                   
                     this.clearMoveOptions();
                     this.deactivateAllPieces();
                     this.removeAllMoveDestinationListeners();

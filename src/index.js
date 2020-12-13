@@ -16,7 +16,8 @@ const loadingCallback = () => {
 
 const startingGameCallback = () => {
     // console.log('EVENT NOTED: ', DATA.STARTGAME_EVENT_NAME);
-    game.initializeGame();     
+    game.initializeGame();  
+   
 }
 
 const setListener = (eventName, callback) => {
@@ -36,6 +37,8 @@ setListener(DATA.STARTGAME_EVENT_NAME, startingGameCallback);
 
 console.log('INDEX COMPLETED IMPORTS');
 
+
+
 // let jestTestingVariable = 999;
 // const indexJestTestFunction = () => jestTestingVariable;
 // export default indexJestTestFunction;
@@ -44,4 +47,5 @@ export const loaderLoadedSvgHTML = loader.importedSvgHTML;
 export const loaderDimentions = { width: loader.width, height: loader.height };
 export const allCells = game.board.cells;
 export const allPieces = game.board.pieces;
+export const pieceMovementSpeed = parseInt(game.board.pieceMovementSpeed);
 

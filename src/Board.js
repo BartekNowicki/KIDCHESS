@@ -9,6 +9,7 @@ class Board extends TheDOM {
     this.boardSize = null;
     this.cells = [];
     this.pieces = [];
+    this.pieceMovementSpeed = 1000;
 //         this.masterTimeline = null;
 //         this.ease = null;
     }
@@ -74,8 +75,13 @@ class Board extends TheDOM {
 
     initializeBoard() {
         this.toggleVisibility(this.element, 'visible');
+        this.pieceMovementEase = "ease-out";
         document.documentElement.style.setProperty("--pieceColor1", "green");
         document.documentElement.style.setProperty("--pieceColor2", "red");
+        document.documentElement.style.setProperty("--pieceMovementSpeed", `${this.pieceMovementSpeed / 1000}s`);
+        document.documentElement.style.setProperty("--pieceMovementEase", `${this.pieceMovementEase}`);
+        
+        
         // console.log('initializing a new board instance');
         const { width, height } = loaderDimentions;
         this.boardSize = Math.min(width, height);        

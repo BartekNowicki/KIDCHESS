@@ -1,6 +1,3 @@
-// import { TheDOM } from './TheDOM.js';
-
-// export class Cell extends TheDOM {
     export class Cell {
     constructor (row, col, size) {
         // super();
