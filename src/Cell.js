@@ -1,11 +1,9 @@
     export class Cell {
     constructor (row, col, size) {
-        // super();
         this.row = row;
         this.col = col;
-        // this.occupied = false;
-        // this.hasPiece = false;
         this.piece = "";
+        this.pieceColorSelection = "";
         this.selector = `[data-row="${this.row}"][data-col="${this.col}"]`;
         this.size = size;
         this.element = this.createElement();

@@ -11,7 +11,7 @@ export class Piece {
             this.fromLeft = null;
             this.active = false;
             this.moveOptionCells = [];
-            this.cellsToAttack = [];
+            this.piecesToAttack = [];
             this.doneCheckingUpword = false;
             this.doneCheckingDownword = false;
             this.doneCheckingLeftword = false;
@@ -179,17 +179,85 @@ export class Piece {
             });
         }
 
-        findCellsToAttack(pieceName, row, col) {
-            this.cellsToAttack.length = 0;
-            for (let i = 0; i <= 1; i++) {
-                this.cellsToAttack.push(this.allCellsFromIndex[i][i]);
+        lookForEnemyCells(direction, onlyOneCell = false) {
+            let i = 1;
+            //j will allow to switch directions when looking
+            let j;
+            let rightLeftSwitch;
+            let row = this.parentCell.row;
+            let col = this.parentCell.col;
+            if (direction === "upLeft" || direction === "downLeft") {
+                rightLeftSwitch = 1;
+            } else if (direction === "upRight" || direction === "downRight") {
+                rightLeftSwitch = -1;
+                
             }
+            
+            console.log('SWITCH::::::', direction, rightLeftSwitch);
+            let keepLooking = true;
+            const enemyColorSelection = this.colorSelection === "first" ? "second" : "first";
+            console.log(`LOOKING FOR ${enemyColorSelection} ENEMIES ${direction}`);
+
+            while (keepLooking) {
+                j = i * rightLeftSwitch;
+
+                // START TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
+                if (this.allCellsFromIndex[row - i]
+                    && this.allCellsFromIndex[row - i][col - j]) {
+                        this.allCellsFromIndex[row - i][col - j].element.style.border = "1px dashed white"; 
+                    }
+                // END TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
+
+                
+                if (this.allCellsFromIndex[row - i]
+                    && this.allCellsFromIndex[row - i][col - j] 
+                    && this.allCellsFromIndex[row - i][col - j].piece !== "" 
+                    && this.allCellsFromIndex[row - i][col - j].pieceColorSelection === enemyColorSelection)
+                    {
+                        keepLooking = false;
+                        return this.allCellsFromIndex[row - i][col - j]
+                    } else {
+                        if (onlyOneCell) return null
+                        console.log('looking...', i, keepLooking);
+                        i === 8 ? keepLooking = false : i++;                        
+                    }                  
+            }  
+            return null          
+
+        }
+
+        putCellPieceOnTargetList(cell) {
+            this.allPiecesFromIndex.forEach(piece => {
+                if (piece.parentCell === cell) {
+                    this.piecesToAttack.push(piece);
+                }
+            });
+        }
+
+        findPiecesToAttack() {
+            this.piecesToAttack.length = 0;
+            if (this.name === "pawn") {
+                if (this.row === 0 || this.row === 7) return
+
+                const foundCellUpLeft = this.lookForEnemyCells("upLeft", false);               
+                if (foundCellUpLeft) {
+                    this.putCellPieceOnTargetList(foundCellUpLeft);
+                } else console.log('NO ENEMIES FOUND UP LEFT...');
+
+                const foundCellUpRight = this.lookForEnemyCells("upRight", false);
+                if (foundCellUpRight) {
+                    this.putCellPieceOnTargetList(foundCellUpRight);
+                } else console.log('NO ENEMIES FOUND UP RIGHT...');
+
+            }
+
         }
 
         shoot() {
-            this.findCellsToAttack();
-            this.cellsToAttack.forEach(cell => {
-                console.log(`${this.name} --> ${cell.row} ${cell.col}`);
+            this.findPiecesToAttack();            
+            this.piecesToAttack.forEach(piece => {
+                //console.log(`${this.name} --> ${cell.row} ${cell.col}`);
+                piece.element.style.border = "1px solid yellow";
 
                 const bullet = document.createElement('div');
                 bullet.style.width = this.element.style.width;
@@ -214,10 +282,14 @@ export class Piece {
                     this.parentCell.piece = "";
                     this.parentCell = cell;
                     this.parentCell.piece = this.name;
+                    this.parentCell.pieceColorSelection = this.colorSelection;
+                    
 
+                    //EITHER SETTIMEOUT OR LISTENER FOR ANIMATIONEND
                     setTimeout(() => {
                         this.shoot();
-                        }, parseInt(this.pieceMovementSpeedFromIndex + 300));
+                        // }, parseInt(this.pieceMovementSpeedFromIndex + 300));
+                    }, 0);
                    
                     this.clearMoveOptions();
                     this.deactivateAllPieces();
@@ -264,12 +336,13 @@ export class Piece {
             this.removeAllMoveDestinationListenersOfOtherPieces();
             this.addMoveDestinationListeners();
             // console.log(`${this.colorSelection} ${this.name} ACTIVATED: ${this.active}`);
-            console.log('MY INDEX: ', this.allPiecesFromIndex.indexOf(this));    
+            // console.log('MY INDEX: ', this.allPiecesFromIndex.indexOf(this));    
         }
         
         createThePiece() {
             const chessPieceHTML = loaderLoadedSvgHTML[this.findPieceIndex(this.name)];
             this.parentCell.piece = this.name;
+            this.parentCell.pieceColorSelection = this.colorSelection;
             // console.log('PIECE NAME: ', this.parentCell.piece); 
             // console.log('PARENT SIZE: ', this.parentCell.size); 
             // console.log('PIECE HTML: ', chessPieceHTML);
