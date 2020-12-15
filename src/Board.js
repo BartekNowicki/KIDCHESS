@@ -44,7 +44,8 @@ class Board extends TheDOM {
         
 
         //TEST PIECE FOR CHECKING MOVEMENT OPTIONS
-        //  this.insertPiece('king', this.cells[4][3], "first", false);
+         this.insertPiece('king', this.cells[4][3], "first", false);
+         this.insertPiece('king', this.cells[4][4], "second", false);
 
             this.insertPiece('rook', this.cells[7][0], "first", false);
             this.insertPiece('rook', this.cells[7][7], "first", false);

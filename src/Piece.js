@@ -179,46 +179,81 @@ export class Piece {
             });
         }
 
-        lookForEnemyCells(direction, onlyOneCell = false) {
+        markTheCellIfItExists(row, col, color) {            
+            if (this.allCellsFromIndex[row]
+                && this.allCellsFromIndex[row][col]) {
+                    this.allCellsFromIndex[row][col].element.style.border = "1px dashed " + color; 
+                    setTimeout(() => { this.allCellsFromIndex[row][col].element.style.border = ""; }, 2000);
+                }                 
+        }
+
+        knightLooksForEnemyCells(row, col, colorSelection) {
+            this.markTheCellIfItExists(row, col, "white");                                
+            if (this.allCellsFromIndex[row] 
+                && this.allCellsFromIndex[row][col] 
+                && this.allCellsFromIndex[row][col].piece !== "" 
+                && this.allCellsFromIndex[row][col].pieceColorSelection !== colorSelection) {
+                return this.allCellsFromIndex[row][col];
+                }                
+        }
+
+        lookForEnemyCells(direction, onlyOneCell = false) {            
             let i = 1;
-            //j will allow to switch directions when looking
-            let j;
+            //itertors will allow to switch directions when looking
+            let RLiterator;
+            let UDiterator;
             let rightLeftSwitch;
+            let upDownSwitch;
             let row = this.parentCell.row;
             let col = this.parentCell.col;
-            if (direction === "upLeft" || direction === "downLeft") {
+            if (direction === "upLeft") {
                 rightLeftSwitch = 1;
-            } else if (direction === "upRight" || direction === "downRight") {
-                rightLeftSwitch = -1;
-                
-            }
+                upDownSwitch = 1;
+            } else if (direction === "downLeft") {
+                rightLeftSwitch = 1;
+                upDownSwitch = -1;
+            } else if (direction === "upRight") {
+                rightLeftSwitch = -1;         
+                upDownSwitch = 1;       
+            } else if (direction === "downRight") {
+                rightLeftSwitch = -1;         
+                upDownSwitch = -1;       
+            }  else if (direction === "left") {
+                rightLeftSwitch = 1;         
+                upDownSwitch = 0;       
+            }  else if (direction === "right") {
+                rightLeftSwitch = -1;         
+                upDownSwitch = 0;       
+            }  else if (direction === "up") {
+                rightLeftSwitch = 0;         
+                upDownSwitch = 1;       
+            }  else if (direction === "down") {
+                rightLeftSwitch = 0;         
+                upDownSwitch = -1;       
+            } 
+
             
-            console.log('SWITCH::::::', direction, rightLeftSwitch);
+            // console.log('SWITCH::::::', direction, rightLeftSwitch);
             let keepLooking = true;
             const enemyColorSelection = this.colorSelection === "first" ? "second" : "first";
-            console.log(`LOOKING FOR ${enemyColorSelection} ENEMIES ${direction}`);
+            // console.log(`LOOKING FOR ${enemyColorSelection} ENEMIES ${direction}`);
 
             while (keepLooking) {
-                j = i * rightLeftSwitch;
-
-                // START TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
-                if (this.allCellsFromIndex[row - i]
-                    && this.allCellsFromIndex[row - i][col - j]) {
-                        this.allCellsFromIndex[row - i][col - j].element.style.border = "1px dashed white"; 
-                    }
-                // END TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
-
-                
-                if (this.allCellsFromIndex[row - i]
-                    && this.allCellsFromIndex[row - i][col - j] 
-                    && this.allCellsFromIndex[row - i][col - j].piece !== "" 
-                    && this.allCellsFromIndex[row - i][col - j].pieceColorSelection === enemyColorSelection)
+                RLiterator = i * rightLeftSwitch;
+                UDiterator = i * upDownSwitch;
+                // TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
+                this.markTheCellIfItExists(row - UDiterator, col - RLiterator, "white");
+                                
+                if (this.allCellsFromIndex[row - UDiterator]
+                    && this.allCellsFromIndex[row - UDiterator][col - RLiterator] 
+                    && this.allCellsFromIndex[row - UDiterator][col - RLiterator].piece !== "")
                     {
                         keepLooking = false;
-                        return this.allCellsFromIndex[row - i][col - j]
+                        if (this.allCellsFromIndex[row - UDiterator][col - RLiterator].pieceColorSelection !== enemyColorSelection) return null
+                        return this.allCellsFromIndex[row - UDiterator][col - RLiterator]
                     } else {
                         if (onlyOneCell) return null
-                        console.log('looking...', i, keepLooking);
+                        // console.log('looking...', i, keepLooking);
                         i === 8 ? keepLooking = false : i++;                        
                     }                  
             }  
@@ -235,22 +270,105 @@ export class Piece {
         }
 
         findPiecesToAttack() {
-            this.piecesToAttack.length = 0;
             if (this.name === "pawn") {
                 if (this.row === 0 || this.row === 7) return
-
-                const foundCellUpLeft = this.lookForEnemyCells("upLeft", false);               
-                if (foundCellUpLeft) {
-                    this.putCellPieceOnTargetList(foundCellUpLeft);
-                } else console.log('NO ENEMIES FOUND UP LEFT...');
-
-                const foundCellUpRight = this.lookForEnemyCells("upRight", false);
-                if (foundCellUpRight) {
-                    this.putCellPieceOnTargetList(foundCellUpRight);
-                } else console.log('NO ENEMIES FOUND UP RIGHT...');
-
             }
+            this.piecesToAttack.length = 0;
 
+            if (this.name === "pawn" && this.colorSelection === "first") {
+                this.lookForEnemyCells("upLeft", true) 
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", true))
+                : console.log('NO ENEMIES FOUND UP LEFT...');
+
+                this.lookForEnemyCells("upRight", true)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", true))
+                : console.log('NO ENEMIES FOUND UP RIGHT...');
+                
+            } else if (this.name === "pawn" && this.colorSelection === "second") {
+                this.lookForEnemyCells("downLeft", true)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", true))
+                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+
+                this.lookForEnemyCells("downRight", true)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", true))
+                : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+            } else if (this.name === "king" || this.name === "queen") {
+
+                const onlyOneCell = this.name === "king" ? true : false;
+                this.lookForEnemyCells("upLeft", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", onlyOneCell))
+                : console.log('NO ENEMIES FOUND UP LEFT...');
+
+                this.lookForEnemyCells("upRight", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", onlyOneCell))
+                : console.log('NO ENEMIES FOUND UP RIGHT...')
+
+                this.lookForEnemyCells("downLeft", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", onlyOneCell))
+                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+
+                this.lookForEnemyCells("downRight", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", onlyOneCell))
+                : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+
+                this.lookForEnemyCells("left", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("left", onlyOneCell))
+                : console.log('NO ENEMIES FOUND LEFT...');
+
+                this.lookForEnemyCells("right", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("right", onlyOneCell))
+                : console.log('NO ENEMIES FOUND RIGHT...');
+
+                this.lookForEnemyCells("down", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("down", onlyOneCell))
+                : console.log('NO ENEMIES FOUND DOWN...');
+                
+                this.lookForEnemyCells("up", onlyOneCell)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("up", onlyOneCell))
+                : console.log('NO ENEMIES FOUND UP...');
+            } else if (this.name === "rook") { 
+                this.lookForEnemyCells("left", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("left", false))
+                : console.log('NO ENEMIES FOUND LEFT...');
+
+                this.lookForEnemyCells("right", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("right", false))
+                : console.log('NO ENEMIES FOUND RIGHT...');
+
+                this.lookForEnemyCells("down", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("down", false))
+                : console.log('NO ENEMIES FOUND DOWN...');
+                
+                this.lookForEnemyCells("up", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("up", false))
+                : console.log('NO ENEMIES FOUND UP...');
+            } else if (this.name === "bishop") { 
+                this.lookForEnemyCells("upLeft", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", false))
+                : console.log('NO ENEMIES FOUND UP LEFT...');
+
+                this.lookForEnemyCells("upRight", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", false))
+                : console.log('NO ENEMIES FOUND UP RIGHT...')
+
+                this.lookForEnemyCells("downLeft", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", false))
+                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+
+                this.lookForEnemyCells("downRight", false)
+                ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", false))
+                : console.log('NO ENEMIES FOUND DOWN RIGHT...');                
+            } else if (this.name === "knight") {
+
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row - 2, this.parentCell.col - 1, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row - 2, this.parentCell.col + 1, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row - 1, this.parentCell.col - 2, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row - 1, this.parentCell.col + 2, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row + 1, this.parentCell.col - 2, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row + 1, this.parentCell.col + 2, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row + 2, this.parentCell.col - 1, this.colorSelection));
+                this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row + 2, this.parentCell.col + 1, this.colorSelection));
+            }
         }
 
         shoot() {
@@ -258,6 +376,7 @@ export class Piece {
             this.piecesToAttack.forEach(piece => {
                 //console.log(`${this.name} --> ${cell.row} ${cell.col}`);
                 piece.element.style.border = "1px solid yellow";
+                setTimeout(() => {piece.element.style.border = "";}, 3000);
 
                 const bullet = document.createElement('div');
                 bullet.style.width = this.element.style.width;
