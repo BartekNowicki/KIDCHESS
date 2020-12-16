@@ -7,7 +7,8 @@ import queenHTML from './assets/queen.svg';
 import rookHTML from './assets/rook.svg'; 
 import pawnHTML from './assets/pawn.svg'; 
 import knightHTML from './assets/knight.svg'; 
-import bishopHTML from './assets/bishop.svg'; 
+import bishopHTML from './assets/bishop.svg';
+import bulletHTML from './assets/bullet.svg'; 
 import img1 from './assets/1.jpg';
 import img2 from './assets/2.jpg';
 
@@ -16,7 +17,7 @@ class Loader extends TheDOM {
         super(DATA.LOADER_SELECTOR);
         this.areAllItemsLoaded = false;
 		this.loadedItemsCounter = 0;
-		this.importedSvgHTML = [loaderHTML, startPicHTML, kingHTML, queenHTML, rookHTML, pawnHTML, bishopHTML, knightHTML];
+		this.importedSvgHTML = [loaderHTML, startPicHTML, kingHTML, queenHTML, rookHTML, pawnHTML, bishopHTML, knightHTML, bulletHTML];
 		this.importedPicReferences = [img1, img2];
 		this.allImportedItems = [...this.importedSvgHTML, ...this.importedPicReferences];
 		this.width = 0;

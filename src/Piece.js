@@ -1,4 +1,8 @@
+import { gsap } from "gsap";
+
 import { loaderLoadedSvgHTML, allCells, allPieces, pieceMovementSpeed } from './index.js';
+
+import { currentTurn } from './Game.js';
 
 export class Piece {
         constructor (pieceName, parentCell, colorSelection, smaller) {
@@ -23,11 +27,13 @@ export class Piece {
             this.allCellsFromIndex = allCells;
             this.allPiecesFromIndex = allPieces;
             this.pieceMovementSpeedFromIndex = pieceMovementSpeed;
-            this.createThePiece();
-            
+            this.testColorOfExaminedCells = "white";
+            this.testColorOfFoundTargets = "yellow";
+            this.currentTurnFromGame = currentTurn; 
+            this.createThePiece();            
         }
 
-        findPieceIndex(piece) {
+        findContentIndex(piece) {
             let index = -1;
             loaderLoadedSvgHTML.forEach(item => {
               if (item.includes(piece)) {
@@ -239,10 +245,10 @@ export class Piece {
             // console.log(`LOOKING FOR ${enemyColorSelection} ENEMIES ${direction}`);
 
             while (keepLooking) {
-                RLiterator = i * rightLeftSwitch;
-                UDiterator = i * upDownSwitch;
+                RLiterator = i * rightLeftSwitch; //RL = RIGHT-LEFT
+                UDiterator = i * upDownSwitch; //UD = UP-DOWN
                 // TEST TO SEE WHERE LOOKING FOR ENEMY CELLS
-                this.markTheCellIfItExists(row - UDiterator, col - RLiterator, "white");
+                this.markTheCellIfItExists(row - UDiterator, col - RLiterator, this.testColorOfExaminedCells);
                                 
                 if (this.allCellsFromIndex[row - UDiterator]
                     && this.allCellsFromIndex[row - UDiterator][col - RLiterator] 
@@ -372,26 +378,69 @@ export class Piece {
         }
 
         shoot() {
-            this.findPiecesToAttack();            
+            const bullets = [];
+            this.findPiecesToAttack();
+            const masterTimeline = gsap.timeline();            
             this.piecesToAttack.forEach(piece => {
                 //console.log(`${this.name} --> ${cell.row} ${cell.col}`);
-                piece.element.style.border = "1px solid yellow";
-                setTimeout(() => {piece.element.style.border = "";}, 3000);
-
-                const bullet = document.createElement('div');
-                bullet.style.width = this.element.style.width;
-                bullet.style.height = this.element.style.height;
-                bullet.classList.add('bullet');
-                this.element.appendChild(bullet);
-                console.log(this.element, bullet);
-                
+                piece.element.style.border = `1px solid ${this.testColorOfFoundTargets}`;
+                setTimeout(() => {piece.element.style.border = "";}, 2000);
+                const bulletDiv = document.createElement('div');
+                //MAKE SURE SVG CONTAINS <g id="bullet"> 
+                bulletDiv.innerHTML = loaderLoadedSvgHTML[this.findContentIndex("bullet")];
+                bulletDiv.style.width = this.element.style.width;
+                bulletDiv.style.height = this.element.style.height;
+                bulletDiv.classList.add('bulletDiv');
+                this.element.appendChild(bulletDiv);
+                bullets.push(bulletDiv);
+                //autoremovechildren?
             });
 
-            //MAKE SURE TO REMOVE THE BULLET ELEMENT AFTER THE HIT
+            bullets.length === this.piecesToAttack.length 
+            ? console.log('BULLETS CREATED: ', bullets.length)
+            : console.warn('INCORRECT NUMBER OF CREATED BULLETS!');
 
+            for (let i = 0; i <= bullets.length - 1; i++) {
+                const targetCol = this.piecesToAttack[i].parentCell.col;
+                const targetRow = this.piecesToAttack[i].parentCell.row;
+                const deltaX = (targetCol - this.parentCell.col) * this.parentCell.size;
+                const deltaY = (targetRow - this.parentCell.row) * this.parentCell.size;
+                // console.log(`TARGET ROW: ${targetRow} COL: ${targetCol}`);
+                // console.log(`DELTA X: ${deltaX} DELTA Y: ${deltaY}`);
+                //THE DESTINATION DISTANCE HERE IS RELATIVE TO THE BULLET DIV
+                masterTimeline.to(bullets[i], {x: deltaX, y: deltaY, rotation: 720, repeat: 0, duration: 1, ease: "none", onComplete: () => {
+                    console.log('HITTING WITH ', bullets[i]);
+                    bullets[i].remove();
+//MARK
+                }});                
+            }
+        }
+
+        markSideToMove() {
+            this.allCellsFromIndex.flat().forEach(cell => {
+                if (cell.row === 0) {
+                    this.currentTurnFromGame.turnFirstPlayer 
+                    ? cell.element.style.borderTop = "0px solid black"
+                    : cell.element.style.borderTop = "3px solid var(--pieceColor2)";
+                } else if (cell.row === 7) {
+                    this.currentTurnFromGame.turnFirstPlayer 
+                    ? cell.element.style.borderBottom = "3px solid var(--pieceColor1)"
+                    : cell.element.style.borderBottom = "0px solid black";
+                }
+            });
+        }
+
+        switchTurns() {
+            let turnBeforeClick = this.currentTurnFromGame.turnFirstPlayer;
+            let turnAfterClick = !this.currentTurnFromGame.turnFirstPlayer;
+            // console.log('NOW FIRST PLAYER: ', this.currentTurnFromGame.turnFirstPlayer);
+            this.currentTurnFromGame.turnFirstPlayer = !this.currentTurnFromGame.turnFirstPlayer;            
+            // console.log('NOW FIRST PLAYER: ', this.currentTurnFromGame.turnFirstPlayer);
+            this.markSideToMove();
         }
         
-        slideThePiece = (event) => {    
+        slideThePiece = (event) => {   
+
             //MUST USE ARROW FUNCTION OTHERWISE REMOVING ALL LISTENERS WOULD REQUIRE BINDING /// AND STORING NEW REFERENCES TO DOZENS OF BOUND FUNCTIONS, ONE PER EACH POSSIBLE //MOVE DESTINATION OF A PIECE
             this.moveOptionCells.forEach(cell => {
                 if (cell.element === event.target) {
@@ -407,13 +456,13 @@ export class Piece {
                     //EITHER SETTIMEOUT OR LISTENER FOR ANIMATIONEND
                     setTimeout(() => {
                         this.shoot();
-                        // }, parseInt(this.pieceMovementSpeedFromIndex + 300));
-                    }, 0);
+                    }, parseInt(this.pieceMovementSpeedFromIndex + 500));                    
                    
                     this.clearMoveOptions();
                     this.deactivateAllPieces();
                     this.removeAllMoveDestinationListeners();
-                    this.removeAllMoveDestinationListenersOfOtherPieces();   
+                    this.removeAllMoveDestinationListenersOfOtherPieces(); 
+                    this.switchTurns();                  
                 }
             });
         }
@@ -436,12 +485,17 @@ export class Piece {
                 if (index !== this.allPiecesFromIndex.indexOf(this) && piece.moveOptionCells.length) {
                     // console.log(`${piece.name} moveOptions: ${piece.moveOptionCells.length}`);
                     piece.removeAllMoveDestinationListeners();
-                    console.log(`ALL MOVE LISTENERS SET BY ${piece.name} DEACTIVATED`);
+                    // console.log(`ALL MOVE LISTENERS SET BY ${piece.name} DEACTIVATED`);
                 }
                 });
         } 
 
         handlePieceClick() {
+
+            if (this.currentTurnFromGame.turnFirstPlayer && this.colorSelection === "second") return
+
+            if (!this.currentTurnFromGame.turnFirstPlayer && this.colorSelection === "first") return
+
             if (this.active) {
                 this.deactivateAllPieces();
                 this.removeAllMoveDestinationListeners();
@@ -459,7 +513,8 @@ export class Piece {
         }
         
         createThePiece() {
-            const chessPieceHTML = loaderLoadedSvgHTML[this.findPieceIndex(this.name)];
+            this.currentTurnFromGame = currentTurn;
+            const chessPieceHTML = loaderLoadedSvgHTML[this.findContentIndex(this.name)];
             this.parentCell.piece = this.name;
             this.parentCell.pieceColorSelection = this.colorSelection;
             // console.log('PIECE NAME: ', this.parentCell.piece); 

@@ -8,10 +8,8 @@ class Board extends TheDOM {
     super(DATA.BOARD_SELECTOR);
     this.boardSize = null;
     this.cells = [];
-    this.pieces = [];
+    this.pieces = [];    
     this.pieceMovementSpeed = 1000;
-//         this.masterTimeline = null;
-//         this.ease = null;
     }
 
     generateCells() {
@@ -40,12 +38,12 @@ class Board extends TheDOM {
       }	
   
       setPieces() {
-        //first = white, bottom        
-        
+        //first = white at the bottom of he board       
 
-        //TEST PIECE FOR CHECKING MOVEMENT OPTIONS
-         this.insertPiece('king', this.cells[4][3], "first", false);
-         this.insertPiece('king', this.cells[4][4], "second", false);
+        //START TEST PIECES FOR CHECKING MOVEMENT OPTIONS
+        //  this.insertPiece('king', this.cells[4][3], "first", false);
+        //  this.insertPiece('king', this.cells[4][4], "second", false);
+         //END TEST PIECES FOR CHECKING MOVEMENT OPTIONS
 
             this.insertPiece('rook', this.cells[7][0], "first", false);
             this.insertPiece('rook', this.cells[7][7], "first", false);
@@ -92,8 +90,12 @@ class Board extends TheDOM {
         // console.log(this.element);
         this.generateCells();
         this.setPieces();
+        //ANY PIECE CAN APPLY THIS METHOD
+        this.pieces[0].markSideToMove();
     }
 }
 
 export const board = new Board();
+
+
 

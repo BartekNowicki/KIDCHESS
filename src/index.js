@@ -16,8 +16,7 @@ const loadingCallback = () => {
 
 const startingGameCallback = () => {
     // console.log('EVENT NOTED: ', DATA.STARTGAME_EVENT_NAME);
-    game.initializeGame();  
-   
+    game.initializeGame(); 
 }
 
 const setListener = (eventName, callback) => {
@@ -35,7 +34,7 @@ setListener(DATA.STARTGAME_EVENT_NAME, startingGameCallback);
 //WHEN THE GAME ENDS MAKE SURE TO REMOVE:
 //window.removeEventListener('resize', loader.resizeGameWindow);
 
-console.log('INDEX COMPLETED IMPORTS');
+// console.log('INDEX COMPLETED IMPORTS');
 
 
 
@@ -48,4 +47,5 @@ export const loaderDimentions = { width: loader.width, height: loader.height };
 export const allCells = game.board.cells;
 export const allPieces = game.board.pieces;
 export const pieceMovementSpeed = parseInt(game.board.pieceMovementSpeed);
+
 

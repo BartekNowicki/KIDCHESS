@@ -30,6 +30,8 @@
     }
   }
 
+  
+
   .smallerSvgInside {    
     & svg {
       transform: translate(-50%, -45%) scale(0.7,0.7);        
@@ -45,13 +47,16 @@
   }
 
   
-  .bullet {
+  .bulletDiv {
     position: absolute;
     left: 0;
     top: 0;
-    background-color: rgba(255, 0, 0, 0.2);
+    // background-color: rgba(255, 0, 0, 0.2);    
     z-index: 1;
     border-radius: 50%;
+    & svg {
+    //IF YOU WANT TO GO UNDET 0.7 USE % NOT TRANSFORM DUE TO VIEBOX SETTINGS
+      transform: translate(-50%, -50%) scale(0.7,0.7);        
+    }
+    opacity: 1;
   }
-
-  
