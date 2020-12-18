@@ -10,6 +10,7 @@ class Board extends TheDOM {
     this.cells = [];
     this.pieces = [];    
     this.pieceMovementSpeed = 1000;
+    this.busyDoingStuff = false;
     }
 
     generateCells() {
@@ -81,6 +82,7 @@ class Board extends TheDOM {
         document.documentElement.style.setProperty("--pieceMovementEase", `${this.pieceMovementEase}`);
         
         
+        
         // console.log('initializing a new board instance');
         const { width, height } = loaderDimentions;
         this.boardSize = Math.min(width, height);        
@@ -96,6 +98,8 @@ class Board extends TheDOM {
 }
 
 export const board = new Board();
+
+export const busyDoingStuff = board.busyDoingStuff;
 
 
 

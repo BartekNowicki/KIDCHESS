@@ -27,4 +27,9 @@
         this.fromTop = this.element.offsetTop;
         this.fromLeft = this.element.offsetLeft;
     }
+
+    resetCellToEmpty() {
+        this.piece = "";
+        this.pieceColorSelection = "";
+    }
 }

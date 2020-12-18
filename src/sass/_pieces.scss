@@ -28,9 +28,7 @@
         fill: var(--pieceColor2);
       }
     }
-  }
-
-  
+  }  
 
   .smallerSvgInside {    
     & svg {
@@ -39,24 +37,90 @@
   }
 
   .activePiece { 
-    border: 1px dashed rgba(245, 245, 245, 0.3);
+    // border: 1px dashed rgba(245, 245, 245, 0.5);
+    box-shadow: 0 0 5px 5px rgba(255, 0, 0, 0.2);
   }
-
-  .activeMoveOptionCell { 
-    border: 1px dashed rgba(163, 4, 4, 0.8);
-  }
-
   
   .bulletDiv {
     position: absolute;
     left: 0;
     top: 0;
-    // background-color: rgba(255, 0, 0, 0.2);    
-    z-index: 1;
     border-radius: 50%;
     & svg {
     //IF YOU WANT TO GO UNDET 0.7 USE % NOT TRANSFORM DUE TO VIEBOX SETTINGS
-      transform: translate(-50%, -50%) scale(0.7,0.7);        
+      transform: translate(-50%, -50%) scale(0.7,0.7);  
     }
-    opacity: 1;
+    opacity: 0;
+  }
+
+  .bulletDivfirst {
+    & svg {
+      & g {
+        fill: var(--pieceColor1);
+      }      
+    }
+  }
+
+  .bulletDivsecond {
+    & svg {
+      & g {
+        fill: var(--pieceColor2);
+      }      
+    }
+  }
+
+  .firstHitOnce {
+    &::after{
+      content: "";
+      position: absolute;
+      left: 10%;
+      top: 10%;
+      width: 10%;
+      height: 10%;
+      background-color: var(--pieceColor2);
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+
+  .secondHitOnce {
+    &::after{
+      content: "";
+      position: absolute;
+      left: 10%;
+      top: 10%;
+      width: 10%;
+      height: 10%;
+      background-color: var(--pieceColor1);
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+
+  .firstHitTwice {
+    &::before{
+      content: "";
+      position: absolute;
+      right: 10%;
+      top: 10%;
+      width: 10%;
+      height: 10%;
+      background-color: var(--pieceColor2);
+      opacity: 0.5;
+      border-radius: 50%;
+    }
+  }
+
+  .secondHitTwice {
+    &::before{
+      content: "";
+      position: absolute;
+      right: 10%;
+      top: 10%;
+      width: 10%;
+      height: 10%;
+      background-color: var(--pieceColor1);
+      opacity: 0.5;
+      border-radius: 50%;
+    }
   }
