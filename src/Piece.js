@@ -30,7 +30,7 @@ export class Piece {
             this.allCellsFromIndex = allCells;
             this.allPiecesFromIndex = allPieces;
             this.pieceMovementSpeedFromIndex = pieceMovementSpeed;
-            this.colorOfExaminedCellBorders = "white";
+            this.colorOfExaminedCellBorders = "orange";
             this.colorOfFoundTargetBorders = "yellowgreen";
             this.currentTurnFromGame = currentTurn; 
             this.tookHits = 0;
@@ -216,7 +216,8 @@ export class Piece {
         }
 
         knightLooksForEnemyCells(row, col, colorSelection) {
-            this.markTheCellIfItExists(row, col, this.colorOfExaminedCellBorders);                                
+            this.markTheCellIfItExists(row, col, this.colorOfExaminedCellBorders);  
+            this.enemyColorSelection = this.colorSelection === "first" ? "second" : "first";                              
             if (this.allCellsFromIndex[row] 
                 && this.allCellsFromIndex[row][col] 
                 && this.allCellsFromIndex[row][col].piece !== "" 
@@ -306,86 +307,106 @@ export class Piece {
             if (this.name === "pawn" && this.colorSelection === "first") {
                 this.lookForEnemyCells("upLeft", true) 
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", true))
-                : console.log('NO ENEMIES FOUND UP LEFT...');
+                // : console.log('NO ENEMIES FOUND UP LEFT...');
+                : null;
 
                 this.lookForEnemyCells("upRight", true)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", true))
-                : console.log('NO ENEMIES FOUND UP RIGHT...');
+                // : console.log('NO ENEMIES FOUND UP RIGHT...');
+                :null;
                 
             } else if (this.name === "pawn" && this.colorSelection === "second") {
                 this.lookForEnemyCells("downLeft", true)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", true))
-                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                // : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                : null;
 
                 this.lookForEnemyCells("downRight", true)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", true))
-                : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+                // : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+                :null;
             } else if (this.name === "king" || this.name === "queen") {
 
                 const onlyOneCell = this.name === "king" ? true : false;
                 this.lookForEnemyCells("upLeft", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", onlyOneCell))
-                : console.log('NO ENEMIES FOUND UP LEFT...');
+                // : console.log('NO ENEMIES FOUND UP LEFT...');
+                :null;
 
                 this.lookForEnemyCells("upRight", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", onlyOneCell))
-                : console.log('NO ENEMIES FOUND UP RIGHT...')
+                // : console.log('NO ENEMIES FOUND UP RIGHT...')
+                : null;
 
                 this.lookForEnemyCells("downLeft", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", onlyOneCell))
-                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                // : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                : null;
 
                 this.lookForEnemyCells("downRight", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", onlyOneCell))
-                : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+                // : console.log('NO ENEMIES FOUND DOWN RIGHT...');
+                : null;
 
                 this.lookForEnemyCells("left", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("left", onlyOneCell))
-                : console.log('NO ENEMIES FOUND LEFT...');
+                // : console.log('NO ENEMIES FOUND LEFT...');
+                : null;
 
                 this.lookForEnemyCells("right", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("right", onlyOneCell))
-                : console.log('NO ENEMIES FOUND RIGHT...');
+                // : console.log('NO ENEMIES FOUND RIGHT...');
+                : null;
 
                 this.lookForEnemyCells("down", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("down", onlyOneCell))
-                : console.log('NO ENEMIES FOUND DOWN...');
+                // : console.log('NO ENEMIES FOUND DOWN...');
+                : null;
                 
                 this.lookForEnemyCells("up", onlyOneCell)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("up", onlyOneCell))
-                : console.log('NO ENEMIES FOUND UP...');
+                // : console.log('NO ENEMIES FOUND UP...');
+                : null;
             } else if (this.name === "rook") { 
                 this.lookForEnemyCells("left", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("left", false))
-                : console.log('NO ENEMIES FOUND LEFT...');
+                // : console.log('NO ENEMIES FOUND LEFT...');
+                : null;
 
                 this.lookForEnemyCells("right", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("right", false))
-                : console.log('NO ENEMIES FOUND RIGHT...');
+                // : console.log('NO ENEMIES FOUND RIGHT...');
+                : null;
 
                 this.lookForEnemyCells("down", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("down", false))
-                : console.log('NO ENEMIES FOUND DOWN...');
+                // : console.log('NO ENEMIES FOUND DOWN...');
+                : null;
                 
                 this.lookForEnemyCells("up", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("up", false))
-                : console.log('NO ENEMIES FOUND UP...');
+                // : console.log('NO ENEMIES FOUND UP...');
+                : null;
             } else if (this.name === "bishop") { 
                 this.lookForEnemyCells("upLeft", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upLeft", false))
-                : console.log('NO ENEMIES FOUND UP LEFT...');
+                // : console.log('NO ENEMIES FOUND UP LEFT...');
+                : null;
 
                 this.lookForEnemyCells("upRight", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("upRight", false))
-                : console.log('NO ENEMIES FOUND UP RIGHT...')
+                // : console.log('NO ENEMIES FOUND UP RIGHT...');
+                : null;
 
                 this.lookForEnemyCells("downLeft", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downLeft", false))
-                : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                // : console.log('NO ENEMIES FOUND DOWN LEFT...');
+                : null;
 
                 this.lookForEnemyCells("downRight", false)
                 ? this.putCellPieceOnTargetList(this.lookForEnemyCells("downRight", false))
-                : console.log('NO ENEMIES FOUND DOWN RIGHT...');                
+                // : console.log('NO ENEMIES FOUND DOWN RIGHT...');                
+                : null;
             } else if (this.name === "knight") {
 
                 this.putCellPieceOnTargetList(this.knightLooksForEnemyCells(this.parentCell.row - 2, this.parentCell.col - 1, this.colorSelection));
@@ -414,6 +435,7 @@ export class Piece {
             // this.allPiecesFromIndex[indexus] && console.log( "REMOVING FROM PIECES: ", this.allPiecesFromIndex[indexus].name);
             this.allPiecesFromIndex.splice(indexus,1);
             this.busyDoingStuffFromBoard = false;
+            console.log('PIECE REMOVED, NOT BUSY ANYMORE...');
         }
 
         pieceKilled(killedPiece) {
@@ -435,6 +457,9 @@ export class Piece {
             //UNCOMMENT ONLY TO TEST FAST KILLS:
             // this.pieceKilled(hitPiece); 
             // return
+
+            hitPiece.element.style.boxShadow = "0 0 25px red";
+            setTimeout(() => hitPiece.element.style.boxShadow = "", 500);
 
             hitPiece.tookHits++;
             if (hitPiece.tookHits === 1) {
@@ -460,8 +485,21 @@ export class Piece {
             return bulletDiv;
         }
 
+        checkIfEnemyPieceHasMeInRange(enemyPiece) {
+            // console.log('CHECKING IF I AM IN RANGE OF ', enemyPiece.element);
+
+            enemyPiece.colorOfExaminedCellBorders = "transparent";
+            enemyPiece.findPiecesToAttack();
+            enemyPiece.colorOfExaminedCellBorders = this.colorOfExaminedCellBorders;
+
+            // console.log(enemyPiece.piecesToAttack);
+            // console.log('IM AM ON ENEMY LIST AS NR:  ', enemyPiece.piecesToAttack.indexOf(this));
+            return enemyPiece.piecesToAttack.indexOf(this) !== -1;            
+        }
+        
         doBattle() {
             this.busyDoingStuffFromBoard = true;
+            console.log('BUSY CHECKING IF BATTLE OR DOING BATTLE!');
             let bullets = [];
             let bulletsHittingBack = [];
             this.findPiecesToAttack();
@@ -486,11 +524,10 @@ export class Piece {
             bullets.length === this.piecesToAttack.length 
             ? console.log(`MADE ${bullets.length} BULLETS FOR ${this.piecesToAttack.length} enemies`)
             : console.warn('INCORRECT NUMBER OF CREATED BULLETS!');
-
-            if (!bullets.length) {
-                this.switchTurns();
-            } else {
+            
                 for (let i = 0; i <= bullets.length - 1; i++) {
+                   
+                    console.log('FIRING BULLET ', i);
                     const targetCol = this.piecesToAttack[i].parentCell.col;
                     const targetRow = this.piecesToAttack[i].parentCell.row;
                     const deltaX = (targetCol - this.parentCell.col) * this.parentCell.size;
@@ -499,7 +536,7 @@ export class Piece {
                     // console.log(`DELTA X: ${deltaX} DELTA Y: ${deltaY}`);
                     //THE DESTINATION DISTANCE HERE IS RELATIVE TO THE BULLET DIV
 
-                    //ANIMATION SEQUENCE:
+                    //***** BATTLE ANIMATION SEQUENCE*****/////
                     bullets[i].classList.add(`bulletDiv${this.colorSelection}`);
                     bulletsHittingBack[i].classList.add(`bulletDiv${this.enemyColorSelection}`);
 
@@ -510,9 +547,17 @@ export class Piece {
                         this.targetTakeHit(this.piecesToAttack[i]);
                     }});
 
-                    tl.to(bullets[i], {opacity: 0, duration: 0.3}); 
-
-                    if (this.piecesToAttack[i].tookHits < this.piecesToAttack[i].maxDamageAllowed - 1) {                  
+                    // console.log(`TARGET HAS ${this.piecesToAttack[i].maxDamageAllowed - this.piecesToAttack[i].tookHits } DAMAGE POINTS LEFT`);
+                    
+                    tl.to(bullets[i], {opacity: 0, duration: 0.3, onComplete: () => {
+                        bullets[i].remove();
+                    }}); 
+                    
+                    //HITS BACK ONLY IF:
+                    // 1) HAS NOT JUST BEEN KILLED
+                    // 2) HAS THE AGGRESSOR IN RANGE
+                    if ((this.piecesToAttack[i].tookHits < this.piecesToAttack[i].maxDamageAllowed - 1) 
+                    && (this.checkIfEnemyPieceHasMeInRange(this.piecesToAttack[i]))) {                  
 
                         tl.set(bulletsHittingBack[i], {x: deltaX, y: deltaY});
 
@@ -521,24 +566,34 @@ export class Piece {
                         tl.to(bulletsHittingBack[i], {x: 0, y: 0, rotation: 1500, repeat: 0, duration: this.bulletFlyTime, ease: "none", yoyo: false, onComplete: () => {
                             // console.log(bulletsHittingBack[i]);
                             this.targetTakeHit(this);
+
+                            // console.log(`I CAN STILL TAKE ${this.maxDamageAllowed - this.tookHits} MORE HITS`);
+                            if (this.maxDamageAllowed === this.tookHits) {
+                                    tl.kill();
+                                    // return console.log('QUITTING BATTLE!');
+                            } 
                         }});
 
                         tl.to(bulletsHittingBack[i], {opacity: 0, duration: 0.3, onComplete: () => {
-                            console.log('DONE HITTING BACK');
+                            this.busyDoingStuffFromBoard = false; 
+                            bulletsHittingBack[i].remove();
+                            console.log('NOT BUSY HITTING BACK ANYMORE...');
                             
                         }}); 
                     } else {
-                        console.log('TARGET TOO DYING TO SHOOT BACK FROM THE GRAVE');
+                        console.log('TARGET NOT HITTING BACK - DYING OR CANNOT REACH ME :)');
                     }
                 }   
-                this.switchTurns();             
-            }
+
+            // bullets.forEach(bullet => console.log(bullet));
+            // bulletsHittingBack.forEach(bullet => console.log(bullet));
+            this.switchTurns();   
         }
 
         markSideToMove(flash = false) {
 
             if (flash) {
-                console.log('NOT YOUR TURN!!!');
+                console.log('NOT YOUR TURN!!!, FIRST PLAYER NOW: ', this.currentTurnFromGame.turnFirstPlayer);
                 this.allCellsFromIndex.flat().forEach(cell => {                    
                     if (cell.row === 0) {
                         this.currentTurnFromGame.turnFirstPlayer 
@@ -574,16 +629,28 @@ export class Piece {
             // console.log('NOW FIRST PLAYER: ', this.currentTurnFromGame.turnFirstPlayer);
             this.markSideToMove(false);
             this.busyDoingStuffFromBoard = false;
+            console.log('SWITCHING TURNS, NOT BUSY ANYMORE...');
+        }
+
+        addRocketAnimation() {
+            const exhaustDiv = document.createElement('div');
+            console.log('EXHAUST DIV: ', exhaustDiv);
+            exhaustDiv.classList.add('rocketFuel');
+            this.element.appendChild(exhaustDiv);
+            setTimeout(() => {
+                exhaustDiv.classList.remove('rocketFuel');
+                exhaustDiv.remove();
+            }, parseInt(this.pieceMovementSpeedFromIndex + 1000));
         }
         
-        slideThePiece = (event) => {  
-
-            this.busyDoingStuffFromBoard = true; 
-
+        slideThePiece = (event) => {      
             //MUST USE ARROW FUNCTION OTHERWISE REMOVING ALL LISTENERS WOULD REQUIRE BINDING /// AND STORING NEW REFERENCES TO DOZENS OF BOUND FUNCTIONS, ONE PER EACH POSSIBLE //MOVE DESTINATION OF A PIECE
             this.moveOptionCells.forEach(cell => {
                 if (cell.element === event.target) {
-                    
+                    this.busyDoingStuffFromBoard = true; 
+                    // console.log('THIS: ', this.element);
+                    // console.log('BUSY SLIDING TO', cell.element);
+                    this.addRocketAnimation();
                     this.element.style.left = `${cell.fromLeft}px`;
                     this.element.style.top = `${cell.fromTop}px`;
                     this.parentCell.piece = "";
@@ -591,7 +658,6 @@ export class Piece {
                     this.parentCell.piece = this.name;
                     this.parentCell.pieceColorSelection = this.colorSelection;
                     
-
                     //EITHER SETTIMEOUT OR LISTENER FOR ANIMATIONEND
                     setTimeout(() => {
                         this.doBattle();
@@ -601,6 +667,9 @@ export class Piece {
                     this.deactivateAllPieces();
                     this.removeAllMoveDestinationListeners();
                     this.removeAllMoveDestinationListenersOfOtherPieces(); 
+
+                    this.busyDoingStuffFromBoard = false; 
+                    console.log('NOT BUSY SLIDING ANYMORE...');
                                       
                 }
             });
@@ -636,12 +705,14 @@ export class Piece {
 
         handlePieceClick() {
 
-            console.log('BUSY: ', this.busyDoingStuffFromBoard);
+            console.log('CHECKING IF BUSY WHEN CLICKED: ', this.busyDoingStuffFromBoard);
 
             if (this.busyDoingStuffFromBoard) return
 
             if (this.currentTurnFromGame.turnFirstPlayer && this.colorSelection === "second" || !this.currentTurnFromGame.turnFirstPlayer && this.colorSelection === "first" ) {
                 this.alertWhoseTurn();
+                console.log('FIRST NOW: ', this.currentTurnFromGame.turnFirstPlayer);
+                console.log('CLICKED COLOR SELECTION: ', this.colorSelection === "second");
                 return
             } 
 

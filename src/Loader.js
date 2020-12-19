@@ -95,7 +95,7 @@ class Loader extends TheDOM {
 		this.height = this.element.getBoundingClientRect().height;
 		// console.log('LOADER WIDTH: ', this.width);
 		// console.log('LOADER HEIGHT: ', this.height);		
-		console.log('NUMBER OF IMPORTED ITEMS: ', this.allImportedItems.length);
+		// console.log('NUMBER OF IMPORTED ITEMS: ', this.allImportedItems.length);
 		// // this.consoleInitialInfo();
 		this.resizeGameWindow();
 		window.addEventListener('resize', this.resizeGameWindow);
