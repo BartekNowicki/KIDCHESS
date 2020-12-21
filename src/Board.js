@@ -73,24 +73,30 @@ class Board extends TheDOM {
             }
       }
 
-    initializeBoard() {
-        this.toggleVisibility(this.element, 'visible');
-        this.pieceMovementEase = "ease-out";
-        document.documentElement.style.setProperty("--pieceColor1", "green");
-        document.documentElement.style.setProperty("--pieceColor2", "red");
-        document.documentElement.style.setProperty("--pieceMovementSpeed", `${this.pieceMovementSpeed / 1000}s`);
-        document.documentElement.style.setProperty("--pieceMovementEase", `${this.pieceMovementEase}`);
+    initializeBoard(gameNumber = 1) {
+        console.log('SETTING UP THE BOARD FOR GAME NUMBER: ', gameNumber);
+        if (gameNumber === 1) {
+          this.toggleVisibility(this.element, 'visible');
+          this.pieceMovementEase = "ease-out";
+          document.documentElement.style.setProperty("--pieceColor1", "green");
+          document.documentElement.style.setProperty("--pieceColor2", "red");
+          document.documentElement.style.setProperty("--pieceMovementSpeed", `${this.pieceMovementSpeed / 1000}s`);
+          document.documentElement.style.setProperty("--pieceMovementEase", `${this.pieceMovementEase}`);
+          
+          // console.log('initializing a new board instance');
+          const { width, height } = loaderDimentions;
+          this.boardSize = Math.min(width, height);        
+          this.element.style.width = this.boardSize + "px";
+          this.element.style.height = this.boardSize + "px";
+          // console.log(this.size);
+          // console.log(this.element);
+          this.generateCells();
+        } else {
+          this.cells.flat().forEach(cell => cell.resetCellToEmpty());
+          this.busyDoingStuff = false;
+          
+        }
         
-        
-        
-        // console.log('initializing a new board instance');
-        const { width, height } = loaderDimentions;
-        this.boardSize = Math.min(width, height);        
-        this.element.style.width = this.boardSize + "px";
-        this.element.style.height = this.boardSize + "px";
-        // console.log(this.size);
-        // console.log(this.element);
-        this.generateCells();
         this.setPieces();
         //ANY PIECE CAN APPLY THIS METHOD
         this.pieces[0].markSideToMove();
@@ -100,6 +106,8 @@ class Board extends TheDOM {
 export const board = new Board();
 
 export const busyDoingStuff = board.busyDoingStuff;
+
+export const mainBoardElement = board.element;
 
 
 

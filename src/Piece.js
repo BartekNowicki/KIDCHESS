@@ -1,10 +1,12 @@
 import { gsap } from "gsap";
 
+import { DATA } from './TheDOM.js';
+
 import { loaderLoadedSvgHTML, allCells, allPieces, pieceMovementSpeed } from './index.js';
 
 import { currentTurn } from './Game.js';
 
-import { busyDoingStuff } from './Board.js';
+import { busyDoingStuff, mainBoardElement } from './Board.js';
 
 export class Piece {
         constructor (pieceName, parentCell, colorSelection, smaller) {
@@ -429,26 +431,98 @@ export class Piece {
         }
 
         removePiece(removedPiece) {
+            removedPiece.element.innerTxt = '';
+            removedPiece.element.outerHTML = '';
             removedPiece.element.remove();
             const indexus = this.allPiecesFromIndex.findIndex(piece=>piece === removedPiece);
             console.log(`REMOVING PIECE INDEX: ${indexus}`);
             // this.allPiecesFromIndex[indexus] && console.log( "REMOVING FROM PIECES: ", this.allPiecesFromIndex[indexus].name);
-            this.allPiecesFromIndex.splice(indexus,1);
+            this.allPiecesFromIndex.splice(indexus, 1);
+            // console.log('LENGTH: ',this.allPiecesFromIndex.length);
             this.busyDoingStuffFromBoard = false;
-            console.log('PIECE REMOVED, NOT BUSY ANYMORE...');
+            // console.log('PIECE REMOVED, NOT BUSY ANYMORE...');
+        }
+
+        destroyAllPieces() {
+            
+            while (this.allPiecesFromIndex.length) {
+                this.removePiece(this.allPiecesFromIndex[0])
+            }
+            console.log('NUMBER OF PIECES PRESENT: ', this.allPiecesFromIndex.length);
+            //ALL LOOPS BELOW REMOVE ONLY HALF OF THE PIECES...WTH?
+            // for (const piece of this.allPiecesFromIndex) {
+            //     this.removePiece(piece);
+            // } 
+            // this.allPiecesFromIndex.forEach(item => this.removePiece(item));
+            // this.allPiecesFromIndex.forEach(item => this.removePiece(item));
+            // this.allPiecesFromIndex.forEach(item => this.removePiece(item));
+            // this.allPiecesFromIndex.length = 0;    
+            // console.log('PIECES ARRAY EMPTY: ', this.allPiecesFromIndex);
+        }
+
+        playAgain() {
+            console.log('ANOTHER GAME REQUESTED');
+            //NEED THIS AS REFERENCES STILL LINGER ON:
+            while (document.querySelector('.boardOverlayerDiv')) {
+                document.querySelector('[data-mainWrap]').removeChild(document.querySelector('.boardOverlayerDiv'));
+            }                        
+            this.destroyAllPieces();
+            window.dispatchEvent(new CustomEvent(DATA.STARTGAME_EVENT_NAME));
+        }
+
+        endGame(timeline, kingPiece) {
+            const boardOverlayerDiv = document.createElement('div');
+            boardOverlayerDiv.classList.add('boardOverlayerDiv'); 
+            
+            document.querySelector('[data-mainWrap]').appendChild(boardOverlayerDiv);
+            
+            const winnerInfoDiv = document.createElement('p');
+            winnerInfoDiv.classList.add('winnerInfoDiv');            
+            boardOverlayerDiv.appendChild(winnerInfoDiv);
+
+            let winnerKingDiv = document.createElement('div');            
+            winnerKingDiv.innerHTML = loaderLoadedSvgHTML[this.findContentIndex("king")];
+            boardOverlayerDiv.appendChild(winnerKingDiv);
+            kingPiece.colorSelection === "first"
+            ? winnerKingDiv.classList.add('winnerKingDivsecond')
+            : winnerKingDiv.classList.add('winnerKingDivfirst');
+            console.log('winnerKingDiv',winnerKingDiv);
+
+            const playAgainDiv = document.createElement('div');
+            playAgainDiv.classList.add('playAgainDiv');
+            
+            //THIS LISTENER IS NOT REMOVED:
+            playAgainDiv.addEventListener('click', () => {            
+                mainBoardElement.classList.remove('blurMe');
+                this.playAgain(playAgainDiv);
+            });
+
+            boardOverlayerDiv.appendChild(playAgainDiv);
+            // console.log(playAgainDiv);                      
+                                                
+            mainBoardElement.classList.add('blurMe');
+            timeline.set(winnerKingDiv,  {transformOrigin: '50% 50%'});
+            timeline.to(winnerKingDiv, {scale: 4, duration: 0.5, onComplete: () => {
+                winnerInfoDiv.innerText = "YOU WIN!";
+                playAgainDiv.innerText = "PLAY AGAIN";
+            }}).delay(0);
+            // timeline.to(winnerKingDiv, {boxShadow:"0 0 25px red", duration: 0.3});
+            timeline.to(playAgainDiv, {opacity: 1, duration: 0.3, delay: 2});          
         }
 
         pieceKilled(killedPiece) {
             const el = killedPiece.element;
             // console.log('ELEMENT TO KILL: ', el);
-            //GSAP DOCS: create a gap (insert 1 second after end of timeline)
-            //tl.to(".class", {x: 100}, "+=1");
             let tl2 = this.timelineKillPiece();
             tl2.to(el, {rotation: 360, opacity: 0, duration: 0.3, onComplete: () => { 
                 // console.log('KILLED!');
-                killedPiece.parentCell.resetCellToEmpty();
-                this.removePiece(killedPiece);
-                tl2.kill();
+                    killedPiece.parentCell.resetCellToEmpty();
+                    if (killedPiece.name !== "king") {
+                        tl2.kill();
+                        this.removePiece(killedPiece);
+                    } else {
+                        this.endGame(tl2, killedPiece);
+                    }                
                 }
             });
         }
@@ -545,6 +619,10 @@ export class Piece {
                     tl.to(bullets[i], {x: deltaX, y: deltaY, rotation: 1500, repeat: 0, duration: this.bulletFlyTime, ease: "none", yoyo: false, onComplete: () => {
                         // console.log(bullets[i]);
                         this.targetTakeHit(this.piecesToAttack[i]);
+
+                        //UNCOMMENT TO TESTING FAST GAME END:  
+                        this.endGame(tl, this.piecesToAttack[i]);
+
                     }});
 
                     // console.log(`TARGET HAS ${this.piecesToAttack[i].maxDamageAllowed - this.piecesToAttack[i].tookHits } DAMAGE POINTS LEFT`);
@@ -633,14 +711,38 @@ export class Piece {
         }
 
         addRocketAnimation() {
+            let distanceFromTop;
+            switch (this.name) {
+                case 'pawn':
+                    distanceFromTop = 8;
+                break;
+                case 'knight':
+                    distanceFromTop = 14;
+                break;
+                case 'queen':
+                    distanceFromTop = 17;
+                break;
+                case 'king':
+                    distanceFromTop = 17;
+                break;
+                case 'bishop':
+                    distanceFromTop = 14;
+                break;
+                case 'rook':
+                    distanceFromTop = 14;
+                break;                
+                default:
+                    distanceFromTop = 14;
+              }
             const exhaustDiv = document.createElement('div');
-            console.log('EXHAUST DIV: ', exhaustDiv);
+            // console.log('EXHAUST DIV: ', exhaustDiv);
             exhaustDiv.classList.add('rocketFuel');
+            exhaustDiv.style.top = `calc(50% + ${distanceFromTop}px)`;
             this.element.appendChild(exhaustDiv);
             setTimeout(() => {
                 exhaustDiv.classList.remove('rocketFuel');
                 exhaustDiv.remove();
-            }, parseInt(this.pieceMovementSpeedFromIndex + 1000));
+            }, parseInt(this.pieceMovementSpeedFromIndex));
         }
         
         slideThePiece = (event) => {      

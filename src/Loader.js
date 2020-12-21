@@ -28,7 +28,7 @@ class Loader extends TheDOM {
 	resizeGameWindow() {
 		const { innerWidth: width, innerHeight: height } = window;
 		const scale = Math.min(width / DATA.CANVAS_BASE_WIDTH, height / DATA.CANVAS_BASE_HEIGHT);
-		console.log(width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);
+		console.log('RESIZING: ', width, height, DATA.CANVAS_BASE_WIDTH, DATA.CANVAS_BASE_HEIGHT);
 		document.documentElement.style.setProperty("--scaleValue", scale);
 		// console.log('GAME WINDOW RESIZED AGAINST BASE 360 X 640 BY SCALE: ', scale);
 	}
@@ -105,24 +105,5 @@ class Loader extends TheDOM {
 
 export const loader = new Loader();
 
-
-//HELPERS:
-// this.element.style.backgroundPosition = `${this.width} center`;
-// this.element.style.backgroundImage = `url('${loaderPic}')`;
-// this.element.style.backgroundRepeat = "no-repeat";
-// this.element.style.backgroundSize = this.width + 'px';	
-
-// let x = window.getComputedStyle(image).getPropertyValue('fill');
-// console.log('x', x)
-
-//     createCellElements() {
-//         this.cells.flat().forEach(cell => {
-//             const newHtml = cell.createElement();
-//             this.element.insertAdjacentHTML("beforeend", newHtml); 
-//             // console.log(newHtml);
-//             cell.element = cell.getElement(cell.selector);
-//             // console.log(cell.element);
-//         });
-//     }
 
 

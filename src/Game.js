@@ -12,9 +12,11 @@ class Game extends TheDOM {
     this.currentTurnObject = { turnFirstPlayer: true };
     }
 
-    initializeGame() {
+    initializeGame(gameNumber) {
       this.toggleVisibility(this.element, 'visible');      
-      this.board.initializeBoard();
+      this.board.initializeBoard(gameNumber);
+      //NEED THIS HERE FOR REMATCHES
+      this.currentTurnObject = { turnFirstPlayer: true };
       }
     
     

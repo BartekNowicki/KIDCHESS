@@ -6,6 +6,8 @@ import { loader } from './Loader.js';
 import { menu } from './Menu.js';
 import { game } from './Game.js';
 
+let gameNumber = 1;
+
 const loadingCallback = () => {
     // console.log('EVENT NOTED: ', DATA.ITEMSLOADED_EVENT_NAME);
     unsetListener(DATA.ITEMSLOADED_EVENT_NAME, loadingCallback);
@@ -15,8 +17,8 @@ const loadingCallback = () => {
 }
 
 const startingGameCallback = () => {
-    // console.log('EVENT NOTED: ', DATA.STARTGAME_EVENT_NAME);
-    game.initializeGame(); 
+    console.log('START GAME EVENT NOTED: ', DATA.STARTGAME_EVENT_NAME);
+    game.initializeGame(gameNumber++); 
 }
 
 const setListener = (eventName, callback) => {
@@ -35,8 +37,6 @@ setListener(DATA.STARTGAME_EVENT_NAME, startingGameCallback);
 //window.removeEventListener('resize', loader.resizeGameWindow);
 
 // console.log('INDEX COMPLETED IMPORTS');
-
-
 
 // let jestTestingVariable = 999;
 // const indexJestTestFunction = () => jestTestingVariable;

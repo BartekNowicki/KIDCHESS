@@ -13,7 +13,7 @@ html {
   --pieceColor2: "";
   --pieceMovementSpeed: "";
   --pieceMovementEase: "";
-  border: 10px solid green;
+  // border: 10px solid green;
 }
 
 body {
@@ -21,7 +21,8 @@ body {
   width: 100%;
   position: relative;
   background-color: black;  
-  border: 10px solid yellowgreen;
+  // border: 10px solid yellowgreen;
+  // border: 1px solid $mainColor;
 }
 
 .mainWrap {
@@ -31,9 +32,7 @@ body {
   height: 360px;
   @include positionAbsoluteRightInTheCenterAndScale(var(--scaleValue));
   background-color: black;
-  border: 10px solid $mainColor;
-  // @media(orientation: portrait) {}
-  
+  border: 1px solid $mainColor;
 }
 
 .hidden {
@@ -68,7 +67,7 @@ position: absolute;
 bottom: 1%;
 left: 50%;
 transform: translateX(-50%);
-color: #f44336;
+color: orangered;
 font-size: 2rem;
 // border: 10px solid blue;
 }
