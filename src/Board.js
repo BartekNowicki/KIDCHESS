@@ -78,8 +78,8 @@ class Board extends TheDOM {
         if (gameNumber === 1) {
           this.toggleVisibility(this.element, 'visible');
           this.pieceMovementEase = "ease-out";
-          document.documentElement.style.setProperty("--pieceColor1", "green");
-          document.documentElement.style.setProperty("--pieceColor2", "red");
+          document.documentElement.style.setProperty("--pieceColor1", "rgba(255,69,0,0.6)");
+          document.documentElement.style.setProperty("--pieceColor2", "rgba(173,255,47,0.5)");
           document.documentElement.style.setProperty("--pieceMovementSpeed", `${this.pieceMovementSpeed / 1000}s`);
           document.documentElement.style.setProperty("--pieceMovementEase", `${this.pieceMovementEase}`);
           

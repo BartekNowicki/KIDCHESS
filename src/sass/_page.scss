@@ -28,11 +28,15 @@ body {
 .mainWrap {
   // RETURN TO: width: 640px;
   //440 IS ONLY TO FIT IN DEVTOOLS
-  width: 440px;
-  height: 360px;
+  // width: 440px;
+  // height: 360px;
+
+  //MAKING LESS THAN INITIAL CALCULATIONS BASELINE, IT FITS THE PAGE BETTER:
+  width: 400px;
+  height: 300px;
   @include positionAbsoluteRightInTheCenterAndScale(var(--scaleValue));
   background-color: black;
-  border: 1px solid $mainColor;
+  // border: 1px solid $mainColor;
 }
 
 .hidden {

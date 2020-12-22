@@ -62,7 +62,7 @@ module.exports = {
       ]
       },
       {
-        test: /\.(jpg|png|svg|gif|jpeg)$/,
+        test: /\.(jpg|png|gif|jpeg)$/,
         use: [{
           loader: 'file-loader',
           options: {
@@ -82,6 +82,16 @@ module.exports = {
         ]
 
       },
+
+
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+
+
+
+
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -118,10 +128,10 @@ module.exports = {
     //     }
     //   ]
     // )
-    new CopyPlugin({
-      patterns: [
-        { from: 'public/images', to: 'images' }        
-      ],
-    })
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: 'public/images', to: 'images' }        
+    //   ],
+    // })
   ]
 }
