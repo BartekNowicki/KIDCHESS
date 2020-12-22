@@ -1,6 +1,5 @@
 import './sass/index.scss';
 import { DATA } from './TheDOM.js';
-//IMPORTING EXPORTED INSTANCES, CONSTRUCTOR CALLED UPON EXPORT
 //WHEN LOADING IS COMPLETE LOADER DISPATCHES AN EVENT AND INDEX MOVES ON
 import { loader } from './Loader.js';
 import { menu } from './Menu.js';
@@ -32,9 +31,6 @@ const unsetListener = (eventName, callback) => {
 
 setListener(DATA.ITEMSLOADED_EVENT_NAME, loadingCallback);
 setListener(DATA.STARTGAME_EVENT_NAME, startingGameCallback);
-
-//WHEN THE GAME ENDS MAKE SURE TO REMOVE:
-//window.removeEventListener('resize', loader.resizeGameWindow);
 
 // console.log('INDEX COMPLETED IMPORTS');
 

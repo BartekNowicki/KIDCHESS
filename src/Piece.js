@@ -193,9 +193,6 @@ export class Piece {
             this.moveOptionCells.forEach(cell => {
                 cell.element.style.border = "1px dashed rgba(163, 4, 4, 1)";
             }); 
-                
-               
-
             // console.log(`CLICKED ROW: ${row} COL: ${col}`);
         }
 
@@ -449,7 +446,7 @@ export class Piece {
                 this.removePiece(this.allPiecesFromIndex[0])
             }
             console.log('NUMBER OF PIECES PRESENT: ', this.allPiecesFromIndex.length);
-            //ALL LOOPS BELOW REMOVE ONLY HALF OF THE PIECES...WTH?
+            //EXAMINE FURTHER WHY ALL LOOPS BELOW WOULD REMOVE ONLY HALF OF THE PIECES
             // for (const piece of this.allPiecesFromIndex) {
             //     this.removePiece(piece);
             // } 
@@ -462,7 +459,7 @@ export class Piece {
 
         playAgain() {
             console.log('ANOTHER GAME REQUESTED');
-            //NEED THIS AS REFERENCES STILL LINGER ON:
+            //NEED WHILE AS REFERENCES LINGER:
             while (document.querySelector('.boardOverlayerDiv')) {
                 document.querySelector('[data-mainWrap]').removeChild(document.querySelector('.boardOverlayerDiv'));
             }                        
@@ -521,7 +518,8 @@ export class Piece {
                         tl2.kill();
                         this.removePiece(killedPiece);
                     } else {
-                        this.endGame(tl2, killedPiece);
+                        setTimeout(() => {this.endGame(tl2, killedPiece)}, 2000);
+                        
                     }                
                 }
             });
@@ -620,8 +618,8 @@ export class Piece {
                         // console.log(bullets[i]);
                         this.targetTakeHit(this.piecesToAttack[i]);
 
-                        //UNCOMMENT TO TESTING FAST GAME END:  
-                        this.endGame(tl, this.piecesToAttack[i]);
+                        // mark UNCOMMENT ONLY TO TEST FAST GAME END UPON FIRST DAMAGE POINT:  
+                        // setTimeout(() => {this.endGame(tl, this.piecesToAttack[i])}, 1000);
 
                     }});
 
@@ -700,8 +698,6 @@ export class Piece {
         }
 
         switchTurns() {
-            let turnBeforeClick = this.currentTurnFromGame.turnFirstPlayer;
-            let turnAfterClick = !this.currentTurnFromGame.turnFirstPlayer;
             // console.log('NOW FIRST PLAYER: ', this.currentTurnFromGame.turnFirstPlayer);
             this.currentTurnFromGame.turnFirstPlayer = !this.currentTurnFromGame.turnFirstPlayer;            
             // console.log('NOW FIRST PLAYER: ', this.currentTurnFromGame.turnFirstPlayer);

@@ -14,7 +14,7 @@ class Menu extends TheDOM {
 	}
 
 	handleStart(event) {
-		//WHY DOES EVENT TARGET SHIFT FROM DIV TO PATH?
+		//EXAMINE FURTHER WHY EVENT TARGET SHIFTS FROM DIV TO PATH
 		this.clickEventTarget.removeEventListener(event.type, this.boundFunction);
 		this.toggleVisibility(this.element, 'invisible');
 		// console.log('LET THE GAME COMMENCE!');
